@@ -1,0 +1,85 @@
+/* ============================================================
+   AgriCure Design Tokens & Global Styles
+   Organic Biophilic + Friendly SaaS — UI/UX Pro Max System
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  /* Forest greens */
+  --forest-dark: #0d2318;
+  --forest:      #1e5c3a;
+  --forest-2:    #2d7a52;
+  --forest-3:    #45a876;
+  --forest-4:    #6fc49a;
+  --forest-5:    #b2e0c8;
+  --mist:        #e8f5ee;
+  --mist-2:      #ceeadb;
+
+  /* Surfaces */
+  --cream:       #f5fbf7;
+  --white:       #ffffff;
+  --card:        #ffffff;
+
+  /* Text */
+  --bark:        #0f2d1c;
+  --bark-2:      #1e4030;
+  --txt-2:       #2d6044;
+  --txt-3:       #6aaa84;
+
+  /* Borders */
+  --br:          #cce8d8;
+  --br-2:        #a8d8bc;
+
+  /* Semantics */
+  --amber:       #e8920a;
+  --amber-bg:    #fffbeb;
+  --amber-br:    #fde68a;
+  --amber-txt:   #7c3900;
+  --red:         #e63d3d;
+  --red-bg:      #fef2f2;
+  --red-br:      #fecaca;
+  --red-txt:     #8b1515;
+  --blue:        #3b82f6;
+  --blue-bg:     #dbeafe;
+
+  /* Typography */
+  --font-sans:   'Plus Jakarta Sans', sans-serif;
+  --font-serif:  'Lora', Georgia, serif;
+
+  /* Radii */
+  --r-8:   8px;
+  --r-12:  12px;
+  --r-16:  16px;
+  --r-20:  20px;
+  --r-24:  24px;
+  --r-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(13, 35, 24, 0.07), 0 0 0 1px rgba(13, 35, 24, 0.04);
+  --shadow-md:  0 4px 14px rgba(13, 35, 24, 0.10), 0 0 0 1px rgba(13, 35, 24, 0.04);
+  --shadow-lg:  0 8px 28px rgba(13, 35, 24, 0.13);
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--cream);
+  color: var(--bark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--br-2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--forest-4); }
+
+/* ── Utility ───────────────────────────────────────────── */
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-only  { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
