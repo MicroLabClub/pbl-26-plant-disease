@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
 WORKDIR /src
 
 # Solution-level config first so package restore can be cached.
-COPY global.json Directory.Build.props Directory.Packages.props nuget.config ./
+COPY global.json Directory.Build.props Directory.Packages.props nuget.config .editorconfig ./
 
 # Copy only csprojs to maximize layer caching for restore.
 COPY src/AgriCure.Api/AgriCure.Api.csproj src/AgriCure.Api/
@@ -29,7 +29,10 @@ RUN dotnet publish src/AgriCure.Api/AgriCure.Api.csproj \
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS runtime
 WORKDIR /app
 
-# The aspnet:9.0 image ships a non-root `app` user (UID 1654). Use it.
+# Pre-create the logs dir and hand /app to the non-root `app` user (UID 1654)
+# so Serilog's rolling-file sink can write at runtime without permission errors.
+RUN mkdir -p /app/logs && chown -R app:app /app
+
 USER app
 
 ENV ASPNETCORE_URLS=http://+:8080 \

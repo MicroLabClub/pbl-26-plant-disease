@@ -1,10 +1,31 @@
+using System.Globalization;
+using AgriCure.Api.Hangfire;
+using AgriCure.Application.Jobs;
 using AgriCure.Infrastructure;
+using Hangfire;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((ctx, services, cfg) => cfg
+    .ReadFrom.Configuration(ctx.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+    .WriteTo.File(
+        "logs/agricure-.log",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 14,
+        shared: true,
+        formatProvider: CultureInfo.InvariantCulture));
+
+builder.Services.AddControllers();
 builder.Services.AddInfrastructure();
+builder.Services.AddHangfireInfrastructure();
+
+builder.Services.AddTransient<DailyDetectionSummaryJob>();
 
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), tags: ["self"])
@@ -14,15 +35,29 @@ builder.Services.AddHealthChecks()
             ?? throw new InvalidOperationException(
                 $"Connection string '{DependencyInjection.DefaultConnectionStringName}' is required."),
         name: "postgres",
-        tags: ["ready"]);
+        tags: ["ready"])
+    .AddHangfire(opts => opts.MinimumAvailableServers = 1, name: "hangfire", tags: ["ready"]);
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
     await app.Services.ApplyMigrationsAsync();
 }
 
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = [new DevelopmentOnlyDashboardFilter(app.Environment)],
+});
+
+RecurringJob.AddOrUpdate<DailyDetectionSummaryJob>(
+    "daily-detection-summary",
+    job => job.ExecuteAsync(),
+    Cron.Daily);
+
+app.MapControllers();
 app.MapGet("/", () => "AgriCure API up");
 
 app.MapHealthChecks("/health", new HealthCheckOptions
