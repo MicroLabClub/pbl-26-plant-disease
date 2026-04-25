@@ -1,7 +1,10 @@
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using AgriCure.Application.Common.Auth;
+using AgriCure.Application.Common.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AgriCure.Api.Controllers;
 
@@ -37,11 +40,14 @@ public abstract class AppControllerBase : ControllerBase
                 "Validation failed in {Controller}.{Action}: {ErrorCount} error(s)",
                 controllerName, actionName, ex.Errors.Count());
 
-            var errors = ex.Errors
-                .GroupBy(e => string.IsNullOrEmpty(e.PropertyName) ? "_" : e.PropertyName)
-                .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
-
-            return ValidationProblem(new ValidationProblemDetails(errors));
+            var modelState = new ModelStateDictionary();
+            foreach (var failure in ex.Errors)
+            {
+                modelState.AddModelError(
+                    ToCamelCase(failure.PropertyName),
+                    failure.ErrorMessage);
+            }
+            return ValidationProblem(modelState);
         }
         catch (AuthenticationFailedException ex)
         {
@@ -53,6 +59,17 @@ public abstract class AppControllerBase : ControllerBase
                 title: "Authentication failed.",
                 detail: ex.Message,
                 statusCode: StatusCodes.Status401Unauthorized);
+        }
+        catch (NotFoundException ex)
+        {
+            Logger.LogInformation(
+                "Resource not found in {Controller}.{Action}: {Message}",
+                controllerName, actionName, ex.Message);
+
+            return Problem(
+                title: "Not found.",
+                detail: ex.Message,
+                statusCode: StatusCodes.Status404NotFound);
         }
         catch (Exception ex)
         {
@@ -67,5 +84,21 @@ public abstract class AppControllerBase : ControllerBase
                 detail: "An unexpected error occurred while processing your request.",
                 statusCode: StatusCodes.Status500InternalServerError);
         }
+    }
+
+    /// <summary>Lowercase the first character so the JSON `errors` map keys match the rest of the camelCase JSON.</summary>
+    private static string ToCamelCase(string property)
+    {
+        if (string.IsNullOrEmpty(property))
+        {
+            return string.Empty;
+        }
+        if (char.IsLower(property[0]))
+        {
+            return property;
+        }
+        return string.Create(
+            CultureInfo.InvariantCulture,
+            $"{char.ToLowerInvariant(property[0])}{property[1..]}");
     }
 }

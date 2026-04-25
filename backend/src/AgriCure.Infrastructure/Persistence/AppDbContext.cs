@@ -1,4 +1,5 @@
 using AgriCure.Application.Common.Interfaces;
+using AgriCure.Domain.Detections;
 using AgriCure.Domain.Identity;
 using AgriCure.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,6 +13,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public const string DefaultSchema = "app";
 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+    public DbSet<Detection> Detections => Set<Detection>();
+
+    public DbSet<ClassPrediction> Predictions => Set<ClassPrediction>();
+
+    public DbSet<Plant> Plants => Set<Plant>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

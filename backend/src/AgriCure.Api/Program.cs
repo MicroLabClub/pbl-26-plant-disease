@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AgriCure.Api.Hangfire;
 using AgriCure.Application;
 using AgriCure.Application.Jobs;
@@ -24,7 +26,21 @@ builder.Host.UseSerilog((ctx, services, cfg) => cfg
         shared: true,
         formatProvider: CultureInfo.InvariantCulture));
 
-builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(opts =>
+    {
+        opts.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
+    });
+
+builder.Services.ConfigureHttpJsonOptions(opts =>
+{
+    opts.SerializerOptions.Converters.Add(
+        new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
+});
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddHangfireInfrastructure();
@@ -84,11 +100,36 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Swagger UI is open in Development; outside Development it requires the admin role.
+// Browsers don't auto-send the bearer header — production admins need a tool that
+// can attach `Authorization: Bearer <token>` (e.g. a browser extension or curl).
+if (!app.Environment.IsDevelopment())
+{
+    app.Use(async (ctx, next) =>
+    {
+        if (ctx.Request.Path.StartsWithSegments("/swagger") &&
+            !ctx.User.IsInRole(AgriCure.Infrastructure.Identity.ApplicationRole.Admin))
+        {
+            ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            ctx.Response.ContentType = "application/problem+json";
+            await ctx.Response.WriteAsJsonAsync(new
+            {
+                type = "https://tools.ietf.org/html/rfc9110#section-15.5.2",
+                title = "Authentication failed.",
+                status = StatusCodes.Status401Unauthorized,
+                detail = "Swagger UI requires the admin role outside Development.",
+            });
+            return;
+        }
+        await next();
+    });
+}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 if (app.Environment.IsDevelopment())
 {
