@@ -1,0 +1,147 @@
+{
+  "sidebar": {
+    "tagline": "Интеллектуальное обнаружение болезней",
+    "nav": {
+      "groups": {
+        "monitor": "Мониторинг",
+        "detection": "Обнаружение",
+        "treatment": "Лечение",
+        "system": "Система"
+      },
+      "items": {
+        "dashboard": "Панель управления",
+        "liveCamera": "Прямая трансляция",
+        "fieldReport": "Полевой отчёт",
+        "detectionLog": "Журнал обнаружений",
+        "plantPassport": "Паспорт растения",
+        "severityTrends": "Тенденции тяжести",
+        "recommendations": "Рекомендации",
+        "treatmentHistory": "История лечения",
+        "standPosition": "Позиция стенда",
+        "notifications": "Уведомления"
+      }
+    },
+    "device": {
+      "connected": "Подключено через телефон",
+      "disconnected": "Отключено"
+    }
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "subtitle": "Теплица А — Ряды томатов",
+    "synced": "Синхронизировано",
+    "connecting": "Подключение…",
+    "systemOk": "Система OK",
+    "alerts_one": "{{count}} оповещение",
+    "alerts_few": "{{count}} оповещения",
+    "alerts_many": "{{count}} оповещений",
+    "alerts_other": "{{count}} оповещений",
+    "stats": {
+      "detectionsToday": "Обнаружений сегодня",
+      "detectionsDelta": "+{{count}} по сравнению со вчера",
+      "avgConfidence": "Средняя точность",
+      "last50": "Последние 50 сканирований",
+      "modelAccuracy": "Точность модели ✓",
+      "rowsScanned": "Рядов просканировано",
+      "rowsPending_one": "{{count}} ряд в ожидании",
+      "rowsPending_few": "{{count}} ряда в ожидании",
+      "rowsPending_many": "{{count}} рядов в ожидании",
+      "rowsPending_other": "{{count}} рядов в ожидании",
+      "rowActive": "▶ Ряд 7 активен",
+      "plantsTracked": "Отслеживаемых растений",
+      "withPassport": "С паспортом",
+      "passportsOk": "● Все паспорта OK"
+    },
+    "zoneMap": "Карта зон",
+    "zoneMapDesc": "Будет отображать ряды теплицы с цветовым кодированием по GPS после подключения API геолокации."
+  },
+  "camera": {
+    "title": "Прямая трансляция — Камера ZED 2",
+    "rowSubtitle": "Ряд {{row}} · поз. стенда {{pos}}м · высота {{height}}м",
+    "diseaseFound": "Болезнь обнаружена",
+    "allClear": "Всё в порядке",
+    "latitude": "Широта",
+    "longitude": "Долгота",
+    "standPos": "Поз. стенда",
+    "modelTitle": "Что видит камера",
+    "modelOutput": "Вывод модели",
+    "boundingBoxes": "Ограничивающие рамки",
+    "detected_one": "{{count}} обнаружено",
+    "detected_few": "{{count}} обнаружено",
+    "detected_many": "{{count}} обнаружено",
+    "detected_other": "{{count}} обнаружено",
+    "depth": "Глубина (ZED 2)",
+    "depthVal": "{{val}} м от объектива",
+    "leafArea": "Поражённая площадь листа",
+    "leafAreaVal": "~{{val}}%",
+    "confidenceGate": "Порог уверенности",
+    "pass": "ПРОЙДЕНО (≥60%)",
+    "fail": "НЕ ПРОЙДЕНО (<60%)",
+    "inferenceTime": "Время вывода",
+    "inferenceVal": "{{val}} мс на устройстве",
+    "temperature": "Температура",
+    "humidity": "Влажность",
+    "disease_one": "{{count}} болезнь обнаружена",
+    "disease_few": "{{count}} болезни обнаружены",
+    "disease_many": "{{count}} болезней обнаружено",
+    "disease_other": "{{count}} болезней обнаружено"
+  },
+  "detection": {
+    "loading": "Загрузка…",
+    "title": "События обнаружения",
+    "today": "Сегодня",
+    "itemMeta": "Ряд {{row}} · #{{plant}} · глубина {{depth}}м",
+    "severity": {
+      "critical": "Критический",
+      "warning": "Предупреждение",
+      "healthy": "Здорово"
+    },
+    "passport": {
+      "title": "Паспорт растения — #{{id}} (Ряд {{row}})",
+      "diseaseActive": "Болезнь активна",
+      "healthy": "Здорово",
+      "sparkStart": "13 апр",
+      "sparkEnd": "Сегодня"
+    }
+  },
+  "treatment": {
+    "title": "Лечение",
+    "subtitle": "Протокол «Био первым»",
+    "actNow": "Действовать сейчас",
+    "bioFirst": "Био-первый",
+    "chemical": "Химический",
+    "type": {
+      "biological": "Биологический",
+      "chemical": "Химический"
+    },
+    "phi": "ОЖУ: {{days}} дней",
+    "cost": {
+      "low": "Низкая стоимость",
+      "medium": "Средняя стоимость",
+      "high": "Высокая стоимость"
+    }
+  },
+  "fieldReport": {
+    "title": "Полевой отчёт",
+    "subtitle": "Теплица А — Полная диагностика",
+    "export": "Экспорт PDF",
+    "summary": {
+      "total": "{{count}} обнаружений сегодня",
+      "critical_one": "{{count}} критическое",
+      "critical_few": "{{count}} критических",
+      "critical_many": "{{count}} критических",
+      "critical_other": "{{count}} критических",
+      "warning_one": "{{count}} предупреждение",
+      "warning_few": "{{count}} предупреждения",
+      "warning_many": "{{count}} предупреждений",
+      "warning_other": "{{count}} предупреждений",
+      "rows": "{{scanned}}/{{total}} рядов просканировано"
+    }
+  },
+  "ui": {
+    "reviewNow": "Просмотреть сейчас"
+  },
+  "placeholder": {
+    "desc": "Этот раздел будет построен после подключения API."
+  }
+}

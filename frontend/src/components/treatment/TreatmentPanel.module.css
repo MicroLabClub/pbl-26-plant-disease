@@ -1,0 +1,36 @@
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+.card {
+  border-radius: var(--r-12);
+  padding: 12px;
+  border: 1px solid;
+}
+
+.cardBio  { background: var(--mist);  border-color: var(--br-2); }
+.cardChem { background: var(--white); border-color: var(--br);   }
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.name { font-size: 12px; font-weight: 700; color: var(--bark); }
+
+.desc {
+  font-size: 11px;
+  color: var(--txt-2);
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+
+.tags { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  border: 1px solid;
+}

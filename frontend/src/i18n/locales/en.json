@@ -1,0 +1,135 @@
+{
+  "sidebar": {
+    "tagline": "Intelligent disease detection",
+    "nav": {
+      "groups": {
+        "monitor": "Monitor",
+        "detection": "Detection",
+        "treatment": "Treatment",
+        "system": "System"
+      },
+      "items": {
+        "dashboard": "Dashboard",
+        "liveCamera": "Live camera",
+        "fieldReport": "Field report",
+        "detectionLog": "Detection log",
+        "plantPassport": "Plant passport",
+        "severityTrends": "Severity trends",
+        "recommendations": "Recommendations",
+        "treatmentHistory": "Treatment history",
+        "standPosition": "Stand position",
+        "notifications": "Notifications"
+      }
+    },
+    "device": {
+      "connected": "Connected via phone tether",
+      "disconnected": "Disconnected"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Greenhouse A — Tomato rows",
+    "synced": "Synced just now",
+    "connecting": "Connecting…",
+    "systemOk": "System OK",
+    "alerts_one": "{{count}} alert",
+    "alerts_other": "{{count}} alerts",
+    "stats": {
+      "detectionsToday": "Detections today",
+      "detectionsDelta": "+{{count}} from yesterday",
+      "avgConfidence": "Avg confidence",
+      "last50": "Last 50 scans",
+      "modelAccuracy": "Model accuracy ✓",
+      "rowsScanned": "Rows scanned",
+      "rowsPending_one": "{{count}} row pending",
+      "rowsPending_other": "{{count}} rows pending",
+      "rowActive": "▶ Row 7 active",
+      "plantsTracked": "Plants tracked",
+      "withPassport": "With passport",
+      "passportsOk": "● All passports OK"
+    },
+    "zoneMap": "Zone map",
+    "zoneMapDesc": "Will display greenhouse rows with GPS-based zone coloring once real-time location API is connected."
+  },
+  "camera": {
+    "title": "Live — ZED 2 camera",
+    "rowSubtitle": "Row {{row}} · stand pos {{pos}}m · height {{height}}m",
+    "diseaseFound": "Disease found",
+    "allClear": "All clear",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "standPos": "Stand pos.",
+    "modelTitle": "What the camera sees",
+    "modelOutput": "Model output",
+    "boundingBoxes": "Bounding boxes",
+    "detected_one": "{{count}} detected",
+    "detected_other": "{{count}} detected",
+    "depth": "Depth (ZED 2)",
+    "depthVal": "{{val}} m from lens",
+    "leafArea": "Leaf area affected",
+    "leafAreaVal": "~{{val}}%",
+    "confidenceGate": "Confidence gate",
+    "pass": "PASS (≥60%)",
+    "fail": "FAIL (<60%)",
+    "inferenceTime": "Inference time",
+    "inferenceVal": "{{val}} ms on-device",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "disease_one": "{{count}} disease detected",
+    "disease_other": "{{count}} diseases detected"
+  },
+  "detection": {
+    "loading": "Loading…",
+    "title": "Detection events",
+    "today": "Today",
+    "itemMeta": "Row {{row}} · #{{plant}} · depth {{depth}}m",
+    "severity": {
+      "critical": "Critical",
+      "warning": "Warning",
+      "healthy": "Healthy"
+    },
+    "passport": {
+      "title": "Plant passport — #{{id}} (Row {{row}})",
+      "diseaseActive": "Disease active",
+      "healthy": "Healthy",
+      "sparkStart": "Apr 13",
+      "sparkEnd": "Today"
+    }
+  },
+  "treatment": {
+    "title": "Treatment",
+    "subtitle": "Bio-first protocol",
+    "actNow": "Act now",
+    "bioFirst": "Bio-first",
+    "chemical": "Chemical",
+    "type": {
+      "biological": "Bio-first",
+      "chemical": "Chemical"
+    },
+    "phi": "PHI: {{days}} days",
+    "cost": {
+      "low": "Low cost",
+      "medium": "Moderate cost",
+      "high": "High cost"
+    }
+  },
+  "fieldReport": {
+    "title": "Field Report",
+    "subtitle": "Greenhouse A — Full diagnostics",
+    "export": "Export PDF",
+    "summary": {
+      "total": "{{count}} detections today",
+      "critical_one": "{{count}} critical",
+      "critical_other": "{{count}} critical",
+      "warning_one": "{{count}} warning",
+      "warning_other": "{{count}} warnings",
+      "rows": "{{scanned}}/{{total}} rows scanned"
+    }
+  },
+  "ui": {
+    "reviewNow": "Review now"
+  },
+  "placeholder": {
+    "desc": "This section will be built out once the API is connected."
+  }
+}
