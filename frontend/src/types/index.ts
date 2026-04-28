@@ -1,8 +1,23 @@
-// ============================================================
-// AgriCure — Domain Types
-// These mirror the API response shapes.
-// When you connect real APIs, update these types to match.
-// ============================================================
+export interface AuthRequest {
+  email: string;
+  password: string;
+}
+
+export interface AuthResult {
+  accessToken: string;
+  accessTokenExpiresAt: string;
+  refreshToken: string;
+  refreshTokenExpiresAt: string;
+}
+
+export interface ProblemDetails {
+  type?: string;
+  title: string;
+  status: number;
+  detail?: string;
+  errors?: Record<string, string[]>;
+  traceId?: string;
+}
 
 // ── Camera & Position ────────────────────────────────────
 
@@ -73,6 +88,27 @@ export interface Detection {
   row: number;
   plantId: string;
   positionMeters: number;
+}
+
+// ── Detection write DTOs ─────────────────────────────────
+
+export interface DetectionWriteBase {
+  frameId: number;
+  timestamp: string;
+  severity: DetectionSeverity;
+  predictions: ClassPrediction[];
+  boundingBox: BoundingBox;
+  inferenceMs: number;
+  confidenceGatePassed: boolean;
+  row: number;
+  plantId: string;
+  positionMeters: number;
+}
+
+export type CreateDetectionRequest = DetectionWriteBase;
+
+export interface UpdateDetectionRequest extends DetectionWriteBase {
+  id: string;
 }
 
 // ── Plant Passport ───────────────────────────────────────
