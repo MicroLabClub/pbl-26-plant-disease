@@ -1,15 +1,4 @@
 /// <reference types="vite/client" />
-// ============================================================
-// AgriCure — API Service Layer
-//
-// HOW TO CONNECT REAL APIs:
-//   1. Set VITE_API_BASE_URL in your .env file
-//   2. Replace the mock data functions below with real fetch() calls
-//   3. For WebSocket / streaming camera data, see the TODO comments
-//
-// EXAMPLE .env:
-//   VITE_API_BASE_URL=http://your-jetson-or-backend:8080
-// ============================================================
 
 import type {
   Detection,
@@ -20,23 +9,87 @@ import type {
   Treatment,
   EnvironmentReading,
   SystemStatus,
+  CreateDetectionRequest,
+  UpdateDetectionRequest,
 } from "@/types";
+import { authApi } from "@/services/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
+// ── Token storage ─────────────────────────────────────────
+
+const ACCESS_KEY  = "agricure_access_token";
+const REFRESH_KEY = "agricure_refresh_token";
+
+export const tokenStore = {
+  getAccess:  () => localStorage.getItem(ACCESS_KEY),
+  getRefresh: () => localStorage.getItem(REFRESH_KEY),
+  set: (access: string, refresh: string) => {
+    localStorage.setItem(ACCESS_KEY, access);
+    localStorage.setItem(REFRESH_KEY, refresh);
+  },
+  clear: () => {
+    localStorage.removeItem(ACCESS_KEY);
+    localStorage.removeItem(REFRESH_KEY);
+    window.dispatchEvent(new Event("agricure:logout"));
+  },
+};
+
+export class AuthError extends Error {
+  constructor() {
+    super("Unauthorized");
+    this.name = "AuthError";
+  }
+}
+
 // ── Generic fetch helper ──────────────────────────────────
 
-async function apiFetch<T>(path: string): Promise<T> {
-  // When API_BASE is empty, fall back to mock data (see below)
+interface FetchOptions {
+  method?: string;
+  body?: unknown;
+}
+
+async function apiFetch<T>(path: string, options?: FetchOptions): Promise<T> {
   if (!API_BASE) {
     return getMockData(path) as T;
   }
-  const res = await fetch(`${API_BASE}${path}`);
+  return doFetch<T>(path, options);
+}
+
+async function doFetch<T>(path: string, options?: FetchOptions, retried = false): Promise<T> {
+  const token = tokenStore.getAccess();
+  const method = options?.method ?? "GET";
+  const headers: Record<string, string> = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (options?.body !== undefined) headers["Content-Type"] = "application/json";
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    method,
+    headers,
+    body: options?.body !== undefined ? JSON.stringify(options.body) : undefined,
+  });
+
+  if (res.status === 401 && !retried) {
+    const refresh = tokenStore.getRefresh();
+    if (refresh) {
+      try {
+        const result = await authApi.refresh(refresh);
+        tokenStore.set(result.accessToken, result.refreshToken);
+        return doFetch<T>(path, options, true);
+      } catch {
+        // refresh failed — fall through to clear + throw
+      }
+    }
+    tokenStore.clear();
+    throw new AuthError();
+  }
+
   if (!res.ok) throw new Error(`API error ${res.status}: ${path}`);
+  if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
 
-// ── API functions (swap mock → real) ─────────────────────
+// ── API functions ─────────────────────────────────────────
 
 export const api = {
   /** GET /api/system/status */
@@ -58,6 +111,18 @@ export const api = {
   /** GET /api/detections/:id */
   getDetection: (id: string) => apiFetch<Detection>(`/api/detections/${id}`),
 
+  /** POST /api/detections */
+  createDetection: (data: CreateDetectionRequest) =>
+    apiFetch<{ id: string }>("/api/detections", { method: "POST", body: data }),
+
+  /** PUT /api/detections/:id */
+  updateDetection: (id: string, data: UpdateDetectionRequest) =>
+    apiFetch<void>(`/api/detections/${id}`, { method: "PUT", body: data }),
+
+  /** DELETE /api/detections/:id */
+  deleteDetection: (id: string) =>
+    apiFetch<void>(`/api/detections/${id}`, { method: "DELETE" }),
+
   /** GET /api/passports/:plantId */
   getPassport: (plantId: string) =>
     apiFetch<PlantPassport>(`/api/passports/${plantId}`),
@@ -70,24 +135,8 @@ export const api = {
   getEnvironment: () => apiFetch<EnvironmentReading>("/api/environment/latest"),
 };
 
-// ── WebSocket for live camera / detections ────────────────
-// TODO: Replace URL with your Jetson / backend WebSocket endpoint
-//
-// export function connectLiveFeed(
-//   onFrame: (frame: CameraFrame) => void,
-//   onDetection: (detection: Detection) => void
-// ): () => void {
-//   const ws = new WebSocket(`${WS_BASE}/ws/live`);
-//   ws.onmessage = (e) => {
-//     const msg = JSON.parse(e.data);
-//     if (msg.type === 'frame') onFrame(msg.data);
-//     if (msg.type === 'detection') onDetection(msg.data);
-//   };
-//   return () => ws.close(); // cleanup
-// }
-
 // ============================================================
-// MOCK DATA — remove or replace when APIs are ready
+// MOCK DATA — used when VITE_API_BASE_URL is not set
 // ============================================================
 
 function getMockData(path: string): unknown {
