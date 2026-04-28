@@ -24,7 +24,8 @@
     "device": {
       "connected": "Подключено через телефон",
       "disconnected": "Отключено"
-    }
+    },
+    "logout": "Выйти"
   },
   "dashboard": {
     "title": "Панель управления",

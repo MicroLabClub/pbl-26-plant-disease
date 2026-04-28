@@ -24,7 +24,8 @@
     "device": {
       "connected": "Conectat prin tethering",
       "disconnected": "Deconectat"
-    }
+    },
+    "logout": "Deconectare"
   },
   "dashboard": {
     "title": "Panou de control",

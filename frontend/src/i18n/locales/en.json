@@ -24,7 +24,8 @@
     "device": {
       "connected": "Connected via phone tether",
       "disconnected": "Disconnected"
-    }
+    },
+    "logout": "Sign out"
   },
   "dashboard": {
     "title": "Dashboard",
