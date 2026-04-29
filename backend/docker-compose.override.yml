@@ -9,5 +9,6 @@ services:
   api:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      Cors__AllowedOrigins__0: "http://localhost:5173"
     ports:
       - "${API_PORT:-8080}:8080"
