@@ -25,7 +25,15 @@ export function FieldReportPage() {
           </p>
         </div>
         <div className={styles.tbRight}>
-          <button className={styles.exportBtn}>
+          <button
+            className={styles.exportBtn}
+            onClick={() => {
+              const prev = document.title;
+              document.title = `AgriCure — ${t('fieldReport.title')} · ${new Date().toLocaleDateString()}`;
+              window.print();
+              document.title = prev;
+            }}
+          >
             <FileDown size={14} />
             {t('fieldReport.export')}
           </button>
