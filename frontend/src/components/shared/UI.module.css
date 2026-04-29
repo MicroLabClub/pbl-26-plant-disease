@@ -142,3 +142,11 @@
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.45; }
 }
+
+@media print {
+  .card {
+    break-inside: avoid;
+    margin-bottom: 10px;
+    border-color: #cce8d8 !important;
+  }
+}

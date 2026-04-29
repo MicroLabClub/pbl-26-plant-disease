@@ -133,6 +133,73 @@
       "rows": "{{scanned}}/{{total}} rânduri scanate"
     }
   },
+  "liveCamera": {
+    "title": "Cameră live",
+    "subtitle": "Seră A — Feed în timp real ZED 2"
+  },
+  "plantPassport": {
+    "title": "Pașaport plantă",
+    "subtitle": "Istoric sănătate — Planta #023 · Rândul 7"
+  },
+  "recommendations": {
+    "title": "Recomandări",
+    "subtitle": "Protocol bio-first — Mană târzie"
+  },
+  "severityTrends": {
+    "title": "Tendințe severitate",
+    "subtitle": "Seră A — Ultimele 9 zile",
+    "critical": "{{count}} critic",
+    "warning": "{{count}} avertizare",
+    "healthy": "{{count}} sănătos",
+    "chartTitle": "Severitate în timp",
+    "chartSub": "Suprafață foliară afectată % · Planta #023",
+    "criticalLabel": "Critic",
+    "warningLabel": "Avertizare",
+    "healthyLabel": "Sănătos",
+    "detections": "detecții"
+  },
+  "standPosition": {
+    "title": "Poziție stand",
+    "subtitle": "ZED 2 + Jetson — Telemetrie live",
+    "lat": "Latitudine",
+    "lon": "Longitudine",
+    "row": "Rând",
+    "rowUnit": "din total",
+    "pos": "Poziție",
+    "height": "Înălțime",
+    "speed": "Viteză"
+  },
+  "alertsPage": {
+    "title": "Notificări",
+    "subtitle": "2 alerte necitite"
+  },
+  "treatmentHistory": {
+    "title": "Istoric tratamente",
+    "subtitle": "Seră A — Tratamente aplicate"
+  },
+  "detectionLog": {
+    "title": "Jurnal detecții",
+    "subtitle": "Seră A — Toate evenimentele de detecție",
+    "total": "detecții",
+    "loading": "Se încarcă detecțiile…",
+    "empty": "Nicio detecție nu corespunde filtrului selectat.",
+    "filter": {
+      "all": "Toate",
+      "critical": "Critic",
+      "warning": "Avertizare",
+      "healthy": "Sănătos"
+    },
+    "cols": {
+      "severity": "Severitate",
+      "disease": "Boală",
+      "confidence": "Conf.",
+      "plant": "Plantă",
+      "row": "Rând",
+      "area": "Suprafață",
+      "inference": "Inferență",
+      "time": "Timp"
+    }
+  },
   "ui": {
     "reviewNow": "Revizuiește acum"
   },

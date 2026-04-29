@@ -34,3 +34,9 @@
   border-radius: var(--r-pill);
   border: 1px solid;
 }
+
+@media print {
+  .card { break-inside: avoid; }
+  .name { font-size: 10pt !important; }
+  .desc { font-size: 8pt !important; }
+}

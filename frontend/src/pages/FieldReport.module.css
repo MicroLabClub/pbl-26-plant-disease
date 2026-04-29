@@ -136,3 +136,36 @@
   .bottomGrid { grid-template-columns: 1fr; }
   .page { padding: 16px; }
 }
+
+@media print {
+  .page {
+    padding: 0 !important;
+    overflow: visible !important;
+    min-height: unset !important;
+  }
+
+  .topbar { margin-bottom: 10px !important; }
+
+  /* hide the export button area */
+  .tbRight { display: none !important; }
+
+  .pageHead { font-size: 22pt !important; }
+  .pageSub  { font-size: 9pt !important; margin-bottom: 2px !important; }
+
+  .summaryRow { margin-bottom: 10px !important; }
+
+  /* keep 2-column layout: detection list + treatment panel side by side */
+  .mainGrid {
+    grid-template-columns: 1fr 260px !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* passport full width, hide empty map */
+  .bottomGrid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .futureMap { display: none !important; }
+}

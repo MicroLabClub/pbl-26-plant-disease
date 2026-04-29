@@ -1,25 +1,21 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { LoginPage } from "@/pages/Login";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { DashboardPage } from "@/pages/Dashboard";
 import { FieldReportPage } from "@/pages/FieldReport";
+import { DetectionLogPage } from "@/pages/DetectionLog";
+import { LiveCameraPage } from "@/pages/LiveCamera";
+import { PlantPassportPage } from "@/pages/PlantPassport";
+import { TreatmentsPage } from "@/pages/Treatments";
+import { SeverityTrendsPage } from "@/pages/SeverityTrends";
+import { StandPositionPage } from "@/pages/StandPosition";
+import { AlertsPage } from "@/pages/Alerts";
+import { TreatmentHistoryPage } from "@/pages/TreatmentHistory";
 import styles from "./App.module.css";
 
-const Placeholder = ({ name }: { name: string }) => {
-  const { t } = useTranslation();
-  return (
-    <div className={styles.placeholder}>
-      <h2>{name}</h2>
-      <p>{t("placeholder.desc")}</p>
-    </div>
-  );
-};
-
 function AppShell() {
-  const { t } = useTranslation();
   return (
     <div className={styles.shell}>
       <Sidebar />
@@ -27,50 +23,14 @@ function AppShell() {
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/field-report" element={<FieldReportPage />} />
-          <Route
-            path="/camera"
-            element={<Placeholder name={t("sidebar.nav.items.liveCamera")} />}
-          />
-          <Route
-            path="/detections"
-            element={<Placeholder name={t("sidebar.nav.items.detectionLog")} />}
-          />
-          <Route
-            path="/passport"
-            element={
-              <Placeholder name={t("sidebar.nav.items.plantPassport")} />
-            }
-          />
-          <Route
-            path="/trends"
-            element={
-              <Placeholder name={t("sidebar.nav.items.severityTrends")} />
-            }
-          />
-          <Route
-            path="/treatments"
-            element={
-              <Placeholder name={t("sidebar.nav.items.recommendations")} />
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <Placeholder name={t("sidebar.nav.items.treatmentHistory")} />
-            }
-          />
-          <Route
-            path="/position"
-            element={
-              <Placeholder name={t("sidebar.nav.items.standPosition")} />
-            }
-          />
-          <Route
-            path="/alerts"
-            element={
-              <Placeholder name={t("sidebar.nav.items.notifications")} />
-            }
-          />
+          <Route path="/camera"     element={<LiveCameraPage />} />
+          <Route path="/detections" element={<DetectionLogPage />} />
+          <Route path="/passport"   element={<PlantPassportPage />} />
+          <Route path="/trends"     element={<SeverityTrendsPage />} />
+          <Route path="/treatments" element={<TreatmentsPage />} />
+          <Route path="/history"    element={<TreatmentHistoryPage />} />
+          <Route path="/position"   element={<StandPositionPage />} />
+          <Route path="/alerts"     element={<AlertsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

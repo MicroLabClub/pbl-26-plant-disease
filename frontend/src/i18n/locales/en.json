@@ -127,6 +127,73 @@
       "rows": "{{scanned}}/{{total}} rows scanned"
     }
   },
+  "liveCamera": {
+    "title": "Live Camera",
+    "subtitle": "Greenhouse A — ZED 2 real-time feed"
+  },
+  "plantPassport": {
+    "title": "Plant Passport",
+    "subtitle": "Health timeline — Plant #023 · Row 7"
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "subtitle": "Bio-first treatment protocol — Late blight"
+  },
+  "severityTrends": {
+    "title": "Severity Trends",
+    "subtitle": "Greenhouse A — Last 9 days",
+    "critical": "{{count}} critical",
+    "warning": "{{count}} warning",
+    "healthy": "{{count}} healthy",
+    "chartTitle": "Severity over time",
+    "chartSub": "Leaf area affected % · Plant #023",
+    "criticalLabel": "Critical",
+    "warningLabel": "Warning",
+    "healthyLabel": "Healthy",
+    "detections": "detections"
+  },
+  "standPosition": {
+    "title": "Stand Position",
+    "subtitle": "ZED 2 + Jetson — Live telemetry",
+    "lat": "Latitude",
+    "lon": "Longitude",
+    "row": "Row",
+    "rowUnit": "of total",
+    "pos": "Position",
+    "height": "Height",
+    "speed": "Speed"
+  },
+  "alertsPage": {
+    "title": "Notifications",
+    "subtitle": "2 unread alerts"
+  },
+  "treatmentHistory": {
+    "title": "Treatment History",
+    "subtitle": "Greenhouse A — Applied treatments"
+  },
+  "detectionLog": {
+    "title": "Detection Log",
+    "subtitle": "Greenhouse A — All detection events",
+    "total": "detections",
+    "loading": "Loading detections…",
+    "empty": "No detections match the selected filter.",
+    "filter": {
+      "all": "All",
+      "critical": "Critical",
+      "warning": "Warning",
+      "healthy": "Healthy"
+    },
+    "cols": {
+      "severity": "Severity",
+      "disease": "Disease",
+      "confidence": "Conf.",
+      "plant": "Plant",
+      "row": "Row",
+      "area": "Area",
+      "inference": "Inference",
+      "time": "Time"
+    }
+  },
   "ui": {
     "reviewNow": "Review now"
   },
