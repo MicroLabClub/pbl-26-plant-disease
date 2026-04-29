@@ -1,9 +1,31 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { ApiError } from '@/services/auth';
 import type { ProblemDetails } from '@/types';
 import styles from './Login.module.css';
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState<T>(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
+}
+
+function isEmailValid(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function getPasswordChecks(v: string) {
+  return {
+    length:    v.length >= 8,
+    uppercase: /[A-Z]/.test(v),
+    lowercase: /[a-z]/.test(v),
+    digit:     /[0-9]/.test(v),
+  };
+}
 
 export function LoginPage() {
   const { isAuthenticated, login, register } = useAuth();
@@ -15,11 +37,29 @@ export function LoginPage() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState('');
 
+  // Debounced values — validation shows 600ms after the user stops typing
+  const debouncedEmail    = useDebounce(email, 600);
+  const debouncedPassword = useDebounce(password, 600);
+
   if (isAuthenticated) return <Navigate to="/" replace />;
+
+  const emailOk  = isEmailValid(debouncedEmail);
+  const pwChecks = getPasswordChecks(debouncedPassword);
+  const pwAllOk  = Object.values(pwChecks).every(Boolean);
+
+  const showEmailFeedback = debouncedEmail.length > 0;
+  const showPwFeedback    = debouncedPassword.length > 0;
 
   function clearErrors() {
     setFieldErrors({});
     setFormError('');
+  }
+
+  function switchMode() {
+    setMode(m => m === 'login' ? 'register' : 'login');
+    setEmail('');
+    setPassword('');
+    clearErrors();
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -39,17 +79,12 @@ export function LoginPage() {
         if (err.status === 400 && problem?.errors) {
           const fields: Record<string, string> = {};
           for (const [key, msgs] of Object.entries(problem.errors)) {
-            if (key === '') {
-              setFormError(msgs[0]);
-            } else {
-              fields[key] = msgs[0];
-            }
+            if (key === '') setFormError(msgs[0]);
+            else fields[key] = msgs[0];
           }
           setFieldErrors(fields);
         } else {
-          setFormError(
-            problem?.detail ?? problem?.title ?? 'Authentication failed. Please try again.'
-          );
+          setFormError(problem?.detail ?? problem?.title ?? 'Authentication failed. Please try again.');
         }
       } else {
         setFormError('Unable to connect. Check your network and try again.');
@@ -59,22 +94,31 @@ export function LoginPage() {
     }
   }
 
+  function emailClass() {
+    if (fieldErrors.email) return styles.inputError;
+    if (showEmailFeedback) return emailOk ? styles.inputValid : styles.inputError;
+    return '';
+  }
+
+  function passwordClass() {
+    if (fieldErrors.password) return styles.inputError;
+    if (showPwFeedback && mode === 'register') return pwAllOk ? styles.inputValid : styles.inputError;
+    return '';
+  }
+
+  const pwReqs: { key: keyof typeof pwChecks; label: string }[] = [
+    { key: 'length',    label: '8+ chars' },
+    { key: 'uppercase', label: 'A–Z' },
+    { key: 'lowercase', label: 'a–z' },
+    { key: 'digit',     label: '0–9' },
+  ];
+
   return (
     <div className={styles.page}>
       <div className={styles.card}>
+        {/* Logo */}
         <div className={styles.logo}>
-          <div className={styles.logoMark}>
-            <svg viewBox="0 0 20 20" fill="none" width={18} height={18}>
-              <path
-                d="M10 2C7 2 5 5 5 8c0 2.5 1.5 4.5 4 5.5V11c0-2 1-3.5 3-4.5C11.5 4 10.5 2 10 2z"
-                fill="white"
-              />
-              <path
-                d="M12 6.5C11 8 10.5 9.5 10.5 11v3.8c2-.5 3.5-2.5 3.5-5 0-1.5-.7-2.5-2-3.3z"
-                fill="rgba(255,255,255,0.55)"
-              />
-            </svg>
-          </div>
+          <img src="/agricure.png" alt="AgriCure" className={styles.logoImg} />
           <span className={styles.logoName}>AgriCure</span>
         </div>
 
@@ -90,69 +134,81 @@ export function LoginPage() {
         {formError && <div className={styles.formError}>{formError}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
+          {/* Email */}
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              className={[styles.input, fieldErrors.email ? styles.inputError : ''].join(' ')}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-              placeholder="you@farm.com"
-              required
-            />
-            {fieldErrors.email && (
-              <p className={styles.fieldErr}>{fieldErrors.email}</p>
+            <label className={styles.label} htmlFor="email">Email</label>
+            <div className={styles.inputWrap}>
+              <input
+                id="email"
+                className={[styles.input, emailClass()].join(' ')}
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                autoComplete="email"
+                placeholder="you@farm.com"
+                required
+              />
+              {showEmailFeedback && (
+                <span className={[styles.inputIcon, emailOk ? styles.iconOk : styles.iconErr].join(' ')}>
+                  {emailOk ? '✓' : '✕'}
+                </span>
+              )}
+            </div>
+            {fieldErrors.email && <p className={styles.fieldErr}>{fieldErrors.email}</p>}
+            {showEmailFeedback && !emailOk && !fieldErrors.email && (
+              <p className={styles.fieldErr}>Enter a valid email address.</p>
             )}
           </div>
 
+          {/* Password */}
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              className={[styles.input, fieldErrors.password ? styles.inputError : ''].join(' ')}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-              placeholder="••••••••"
-              required
-            />
-            {fieldErrors.password ? (
-              <p className={styles.fieldErr}>{fieldErrors.password}</p>
-            ) : (
-              mode === 'register' && (
-                <p className={styles.hint}>
-                  Min. 8 chars · uppercase · lowercase · digit
-                </p>
-              )
+            <label className={styles.label} htmlFor="password">Password</label>
+            <div className={styles.inputWrap}>
+              <input
+                id="password"
+                className={[styles.input, passwordClass()].join(' ')}
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                placeholder="••••••••"
+                required
+              />
+              {mode === 'register' && showPwFeedback && (
+                <span className={[styles.inputIcon, pwAllOk ? styles.iconOk : styles.iconErr].join(' ')}>
+                  {pwAllOk ? '✓' : '✕'}
+                </span>
+              )}
+            </div>
+            {fieldErrors.password && <p className={styles.fieldErr}>{fieldErrors.password}</p>}
+            {mode === 'register' && (
+              <ul className={styles.reqList}>
+                {pwReqs.map(r => {
+                  const met = pwChecks[r.key];
+                  return (
+                    <li
+                      key={r.key}
+                      className={[
+                        styles.reqItem,
+                        showPwFeedback ? (met ? styles.reqOk : styles.reqFail) : '',
+                      ].join(' ')}
+                    >
+                      {r.label}
+                    </li>
+                  );
+                })}
+              </ul>
             )}
           </div>
 
           <button type="submit" className={styles.btn} disabled={loading}>
-            {loading
-              ? 'Please wait…'
-              : mode === 'login'
-              ? 'Sign in'
-              : 'Create account'}
+            {loading ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
           </button>
         </form>
 
         <p className={styles.toggle}>
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-          <button
-            type="button"
-            className={styles.toggleBtn}
-            onClick={() => {
-              setMode((m) => (m === 'login' ? 'register' : 'login'));
-              clearErrors();
-            }}
-          >
+          <button type="button" className={styles.toggleBtn} onClick={switchMode}>
             {mode === 'login' ? 'Register' : 'Sign in'}
           </button>
         </p>
