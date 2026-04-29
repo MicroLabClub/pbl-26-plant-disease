@@ -1,11 +1,12 @@
 import { type ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard, Camera, FileText, Star,
-  TrendingUp, Plus, Home, Bell, Monitor, ClipboardList,
+  TrendingUp, Plus, Home, Bell, Monitor, ClipboardList, LogOut,
 } from 'lucide-react';
 import { useSystemStatus } from '@/hooks/useApi';
+import { useAuth } from '@/context/AuthContext';
 import styles from './Sidebar.module.css';
 
 interface NavItem {
@@ -25,6 +26,13 @@ const LANGUAGES = [
 export function Sidebar() {
   const { t, i18n } = useTranslation();
   const { data: system } = useSystemStatus();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   const navGroups: { labelKey: string; items: NavItem[] }[] = [
     {
@@ -143,6 +151,12 @@ export function Sidebar() {
           </button>
         ))}
       </div>
+
+      {/* Logout */}
+      <button className={styles.logoutBtn} onClick={handleLogout}>
+        <LogOut size={13} />
+        {t('sidebar.logout')}
+      </button>
     </aside>
   );
 }
