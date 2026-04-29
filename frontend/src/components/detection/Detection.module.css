@@ -85,3 +85,12 @@
 .tlTitle { font-size: 12px; font-weight: 700; color: var(--bark); }
 .tlDesc { font-size: 10.5px; color: var(--txt-3); margin-top: 1px; line-height: 1.4; }
 .tlTime { font-size: 10px; color: var(--txt-3); margin-top: 2px; font-weight: 600; font-family: monospace; }
+
+@media print {
+  .item { break-inside: avoid; }
+  .tlItem { break-inside: avoid; }
+  .itemName { font-size: 10pt !important; }
+  .itemMeta { font-size: 8pt !important; }
+  .tlTitle  { font-size: 10pt !important; }
+  .tlDesc   { font-size: 8pt !important; }
+}
