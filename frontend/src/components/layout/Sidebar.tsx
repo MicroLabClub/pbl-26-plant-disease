@@ -5,7 +5,6 @@ import {
   LayoutDashboard, Camera, FileText, Star,
   TrendingUp, Plus, Home, Bell, Monitor, ClipboardList, LogOut,
 } from 'lucide-react';
-import { useSystemStatus } from '@/hooks/useApi';
 import { useAuth } from '@/context/AuthContext';
 import styles from './Sidebar.module.css';
 
@@ -25,7 +24,6 @@ const LANGUAGES = [
 
 export function Sidebar() {
   const { t, i18n } = useTranslation();
-  const { data: system } = useSystemStatus();
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -76,16 +74,11 @@ export function Sidebar() {
     <aside className={styles.sidebar}>
       {/* Logo */}
       <div className={styles.logoBox}>
-        <div className={styles.logoMark}>
-          <svg viewBox="0 0 20 20" fill="none" width={20} height={20}>
-            <path d="M10 2C7 2 5 5 5 8c0 2.5 1.5 4.5 4 5.5V11c0-2 1-3.5 3-4.5C11.5 4 10.5 2 10 2z" fill="white" />
-            <path d="M12 6.5C11 8 10.5 9.5 10.5 11v3.8c2-.5 3.5-2.5 3.5-5 0-1.5-.7-2.5-2-3.3z" fill="rgba(255,255,255,0.55)" />
-          </svg>
-        </div>
-        <div>
-          <div className={styles.logoName}>AgriCure</div>
-          <div className={styles.logoTagline}>{t('sidebar.tagline')}</div>
-        </div>
+        <img src="/agricure.png" alt="AgriCure" className={styles.logoImg} />
+        <div className={styles.logoName}>AgriCure</div>
+        <button className={styles.logoutIconBtn} onClick={handleLogout} title={t('sidebar.logout')}>
+          <LogOut size={14} />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -114,31 +107,6 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Device status */}
-      <div className={styles.deviceCard}>
-        <div className={styles.deviceRow}>
-          <div
-            className={styles.deviceDot}
-            style={{
-              background: system?.deviceStatus === 'online' ? '#22c55e' : '#ef4444',
-            }}
-          />
-          <div>
-            <div className={styles.deviceName}>ZED 2 + Jetson</div>
-            <div className={styles.deviceSub}>
-              {system?.deviceStatus === 'online'
-                ? t('sidebar.device.connected')
-                : t('sidebar.device.disconnected')}
-            </div>
-          </div>
-        </div>
-        <div className={styles.deviceMeta}>
-          {system?.gpsActive && <span className={styles.devChip}>GPS</span>}
-          {system?.modelLoaded && <span className={styles.devChip}>{system.modelName.split('-')[0]}</span>}
-          <span className={styles.devChip}>38ms</span>
-        </div>
-      </div>
-
       {/* Language switcher */}
       <div className={styles.langSwitcher}>
         {LANGUAGES.map((lang) => (
@@ -152,11 +120,6 @@ export function Sidebar() {
         ))}
       </div>
 
-      {/* Logout */}
-      <button className={styles.logoutBtn} onClick={handleLogout}>
-        <LogOut size={13} />
-        {t('sidebar.logout')}
-      </button>
     </aside>
   );
 }
