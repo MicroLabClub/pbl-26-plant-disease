@@ -171,7 +171,7 @@ const MOCK_STATS: DashboardStats = {
   plantsTracked: 284,
 };
 
-const MOCK_POSITION: StandPosition = {
+export const MOCK_POSITION: StandPosition = {
   gps: { lat: 47.0245, lon: 28.8323 },
   row: 7,
   totalRows: 14,
