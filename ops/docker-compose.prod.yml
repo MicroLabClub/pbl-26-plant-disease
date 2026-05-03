@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agricure-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - agricure
+    restart: unless-stopped
+
+  api:
+    image: ${IMAGE_BACKEND}
+    container_name: agricure-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__SigningKey: ${JWT_SIGNING_KEY}
+      Jwt__AccessTokenMinutes: ${JWT_ACCESS_TOKEN_MINUTES:-15}
+      Jwt__RefreshTokenDays: ${JWT_REFRESH_TOKEN_DAYS:-7}
+      Admin__Email: ${ADMIN_EMAIL:-}
+      Admin__Password: ${ADMIN_PASSWORD:-}
+      Cors__AllowedOrigins__0: ${CORS_ALLOWED_ORIGIN_0:-}
+      Cors__AllowedOrigins__1: ${CORS_ALLOWED_ORIGIN_1:-}
+    # Bind to loopback only — host nginx (running on the VPS) is the only
+    # thing that should reach this. The container always listens on 8080.
+    ports:
+      - "127.0.0.1:${API_HOST_PORT:-8090}:8080"
+    networks:
+      - agricure
+    restart: unless-stopped
+
+  frontend:
+    image: ${IMAGE_FRONTEND}
+    container_name: agricure-frontend
+    depends_on:
+      - api
+    # Loopback only — host nginx proxies https://agricure.online here.
+    ports:
+      - "127.0.0.1:${FRONTEND_HOST_PORT:-8082}:80"
+    networks:
+      - agricure
+    restart: unless-stopped
+
+networks:
+  agricure:
+
+volumes:
+  postgres-data:
