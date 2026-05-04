@@ -4,7 +4,7 @@
 // Polling interval configurable per hook.
 // ============================================================
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/services/api';
 import type {
   SystemStatus,
@@ -27,9 +27,14 @@ function usePolling<T>(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Keep a ref so the stable `fetch` callback always calls the latest fetcher
+  // without being recreated on every render (which would restart the interval).
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+
   const fetch = useCallback(async () => {
     try {
-      const result = await fetcher();
+      const result = await fetcherRef.current();
       setData(result);
       setError(null);
     } catch (e) {
@@ -37,7 +42,7 @@ function usePolling<T>(
     } finally {
       setLoading(false);
     }
-  }, [fetcher]);
+  }, []); // stable — never recreated
 
   useEffect(() => {
     fetch();
