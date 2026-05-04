@@ -58,7 +58,7 @@ export function CameraPanel() {
           <div className={styles.hud}>
             <div className={styles.hudTop}>
               <span className={styles.hudChip}>
-                ZED 2 · {frame?.resolution ?? '1080p'} · {frame?.fps ?? 30}fps · stereo
+                ZED 2 · {frame?.resolution ?? '1080p'} · {frame?.fps ?? 30}fps · {t('camera.stereo')}
               </span>
               {frame?.isRecording && (
                 <span className={styles.recChip}>
@@ -68,7 +68,7 @@ export function CameraPanel() {
             </div>
             <div className={styles.hudBottom}>
               <span className={styles.hudGps}>
-                {pos?.gps.lat.toFixed(4)}°N {pos?.gps.lon.toFixed(4)}°E · Row {pos?.row} · {pos?.positionMeters?.toFixed(1)}m
+                {pos?.gps.lat.toFixed(4)}°N {pos?.gps.lon.toFixed(4)}°E · {t('camera.hudRow', { row: pos?.row })} · {pos?.positionMeters?.toFixed(1)}m
               </span>
               {hasDisease && (
                 <span className={styles.hudFound}>
