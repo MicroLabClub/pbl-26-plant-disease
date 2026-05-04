@@ -77,7 +77,9 @@
     "temperature": "Temperature",
     "humidity": "Humidity",
     "disease_one": "{{count}} disease detected",
-    "disease_other": "{{count}} diseases detected"
+    "disease_other": "{{count}} diseases detected",
+    "stereo": "stereo",
+    "hudRow": "Row {{row}}"
   },
   "detection": {
     "loading": "Loading…",
@@ -112,6 +114,30 @@
       "low": "Low cost",
       "medium": "Moderate cost",
       "high": "High cost"
+    },
+    "desc": {
+      "trichoderma": "Apply 2g/L foliar spray. Works against 9 of 9 tomato disease classes.",
+      "chlorothalonil": "Use if spread exceeds 3+ rows. Use protective gear."
+    }
+  },
+  "passport": {
+    "event": {
+      "diseaseHigh": {
+        "title": "Late blight detected — high severity",
+        "desc": "{{confidence}}% confidence · {{leafArea}}% leaf area · depth {{depth}}m"
+      },
+      "earlySymptom": {
+        "title": "Early symptom — leaf discoloration",
+        "desc": "{{confidence}}% confidence · flagged for watch"
+      },
+      "healthyScan": {
+        "title": "Healthy scan — no disease",
+        "desc": "Full row scan · depth {{depth}}m"
+      },
+      "created": {
+        "title": "Passport created — transplant day",
+        "desc": "Plant registered in system"
+      }
     }
   },
   "fieldReport": {
@@ -192,6 +218,60 @@
       "area": "Area",
       "inference": "Inference",
       "time": "Time"
+    }
+  },
+  "login": {
+    "welcome": "Welcome back",
+    "createAccount": "Create account",
+    "signInSub": "Sign in to the disease detection dashboard",
+    "registerSub": "Start monitoring your crops with AI",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "emailError": "Enter a valid email address.",
+    "authError": "Authentication failed. Please try again.",
+    "networkError": "Unable to connect. Check your network and try again.",
+    "loading": "Please wait…",
+    "signIn": "Sign in",
+    "register": "Register",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "pwReq": {
+      "length": "8+ chars",
+      "uppercase": "A–Z",
+      "lowercase": "a–z",
+      "digit": "0–9"
+    }
+  },
+  "alerts": {
+    "disease": {
+      "lateBlight": "Late blight",
+      "earlyBlight": "Early blight",
+      "scanComplete": "Scan complete"
+    },
+    "location": "Row {{row}}, Plant #{{plant}}",
+    "scanRow": "Row {{row}}",
+    "desc": {
+      "detected": "{{confidence}}% confidence · {{leafArea}}% leaf area affected · {{action}}",
+      "allHealthy": "All plants healthy · No issues detected"
+    },
+    "action": {
+      "actionRequired": "action required",
+      "monitorClosely": "monitor closely"
+    },
+    "time": {
+      "minsAgo_one": "{{count}} min ago",
+      "minsAgo_other": "{{count}} min ago",
+      "daysAgo_one": "{{count}} day ago",
+      "daysAgo_other": "{{count}} days ago"
+    }
+  },
+  "history": {
+    "applied": "Applied to Row {{row}}, Plants #{{from}}–#{{to}} · {{type}}",
+    "appliedFullRow": "Applied to Row {{row}}, full row · {{type}}",
+    "phiDays": "PHI {{days}} days",
+    "type": {
+      "biological": "biological",
+      "chemical": "chemical"
     }
   },
   "ui": {

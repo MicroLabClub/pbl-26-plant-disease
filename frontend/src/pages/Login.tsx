@@ -1,5 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { ApiError } from '@/services/auth';
 import type { ProblemDetails } from '@/types';
@@ -28,6 +29,7 @@ function getPasswordChecks(v: string) {
 }
 
 export function LoginPage() {
+  const { t } = useTranslation();
   const { isAuthenticated, login, register } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -84,10 +86,10 @@ export function LoginPage() {
           }
           setFieldErrors(fields);
         } else {
-          setFormError(problem?.detail ?? problem?.title ?? 'Authentication failed. Please try again.');
+          setFormError(problem?.detail ?? problem?.title ?? t('login.authError'));
         }
       } else {
-        setFormError('Unable to connect. Check your network and try again.');
+        setFormError(t('login.networkError'));
       }
     } finally {
       setLoading(false);
@@ -107,10 +109,10 @@ export function LoginPage() {
   }
 
   const pwReqs: { key: keyof typeof pwChecks; label: string }[] = [
-    { key: 'length',    label: '8+ chars' },
-    { key: 'uppercase', label: 'A–Z' },
-    { key: 'lowercase', label: 'a–z' },
-    { key: 'digit',     label: '0–9' },
+    { key: 'length',    label: t('login.pwReq.length') },
+    { key: 'uppercase', label: t('login.pwReq.uppercase') },
+    { key: 'lowercase', label: t('login.pwReq.lowercase') },
+    { key: 'digit',     label: t('login.pwReq.digit') },
   ];
 
   return (
@@ -123,12 +125,10 @@ export function LoginPage() {
         </div>
 
         <h1 className={styles.title}>
-          {mode === 'login' ? 'Welcome back' : 'Create account'}
+          {mode === 'login' ? t('login.welcome') : t('login.createAccount')}
         </h1>
         <p className={styles.sub}>
-          {mode === 'login'
-            ? 'Sign in to the disease detection dashboard'
-            : 'Start monitoring your crops with AI'}
+          {mode === 'login' ? t('login.signInSub') : t('login.registerSub')}
         </p>
 
         {formError && <div className={styles.formError}>{formError}</div>}
@@ -136,7 +136,7 @@ export function LoginPage() {
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
           {/* Email */}
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="email">Email</label>
+            <label className={styles.label} htmlFor="email">{t('login.emailLabel')}</label>
             <div className={styles.inputWrap}>
               <input
                 id="email"
@@ -156,13 +156,13 @@ export function LoginPage() {
             </div>
             {fieldErrors.email && <p className={styles.fieldErr}>{fieldErrors.email}</p>}
             {showEmailFeedback && !emailOk && !fieldErrors.email && (
-              <p className={styles.fieldErr}>Enter a valid email address.</p>
+              <p className={styles.fieldErr}>{t('login.emailError')}</p>
             )}
           </div>
 
           {/* Password */}
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="password">Password</label>
+            <label className={styles.label} htmlFor="password">{t('login.passwordLabel')}</label>
             <div className={styles.inputWrap}>
               <input
                 id="password"
@@ -202,14 +202,14 @@ export function LoginPage() {
           </div>
 
           <button type="submit" className={styles.btn} disabled={loading}>
-            {loading ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
+            {loading ? t('login.loading') : mode === 'login' ? t('login.signIn') : t('login.createAccount')}
           </button>
         </form>
 
         <p className={styles.toggle}>
-          {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+          {mode === 'login' ? t('login.noAccount') : t('login.hasAccount')}{' '}
           <button type="button" className={styles.toggleBtn} onClick={switchMode}>
-            {mode === 'login' ? 'Register' : 'Sign in'}
+            {mode === 'login' ? t('login.register') : t('login.signIn')}
           </button>
         </p>
       </div>

@@ -85,7 +85,9 @@
     "disease_one": "{{count}} болезнь обнаружена",
     "disease_few": "{{count}} болезни обнаружены",
     "disease_many": "{{count}} болезней обнаружено",
-    "disease_other": "{{count}} болезней обнаружено"
+    "disease_other": "{{count}} болезней обнаружено",
+    "stereo": "стерео",
+    "hudRow": "Ряд {{row}}"
   },
   "detection": {
     "loading": "Загрузка…",
@@ -120,6 +122,30 @@
       "low": "Низкая стоимость",
       "medium": "Средняя стоимость",
       "high": "Высокая стоимость"
+    },
+    "desc": {
+      "trichoderma": "Нанесите опрыскивание 2г/л на листья. Действует против 9 из 9 классов болезней томатов.",
+      "chlorothalonil": "Применять при распространении более 3+ рядов. Использовать защитное снаряжение."
+    }
+  },
+  "passport": {
+    "event": {
+      "diseaseHigh": {
+        "title": "Фитофтороз обнаружен — высокая степень тяжести",
+        "desc": "{{confidence}}% уверенности · {{leafArea}}% площади листа · глубина {{depth}}м"
+      },
+      "earlySymptom": {
+        "title": "Ранний симптом — обесцвечивание листьев",
+        "desc": "{{confidence}}% уверенности · отмечено для наблюдения"
+      },
+      "healthyScan": {
+        "title": "Здоровое сканирование — болезней нет",
+        "desc": "Полное сканирование ряда · глубина {{depth}}м"
+      },
+      "created": {
+        "title": "Паспорт создан — день пересадки",
+        "desc": "Растение зарегистрировано в системе"
+      }
     }
   },
   "fieldReport": {
@@ -204,6 +230,64 @@
       "area": "Площадь",
       "inference": "Вывод",
       "time": "Время"
+    }
+  },
+  "login": {
+    "welcome": "С возвращением",
+    "createAccount": "Создать аккаунт",
+    "signInSub": "Войдите в панель обнаружения болезней",
+    "registerSub": "Начните мониторинг культур с помощью ИИ",
+    "emailLabel": "Email",
+    "passwordLabel": "Пароль",
+    "emailError": "Введите корректный адрес электронной почты.",
+    "authError": "Ошибка аутентификации. Пожалуйста, попробуйте снова.",
+    "networkError": "Невозможно подключиться. Проверьте сеть и попробуйте снова.",
+    "loading": "Пожалуйста, подождите…",
+    "signIn": "Войти",
+    "register": "Регистрация",
+    "noAccount": "Нет аккаунта?",
+    "hasAccount": "Уже есть аккаунт?",
+    "pwReq": {
+      "length": "8+ символов",
+      "uppercase": "A–Z",
+      "lowercase": "a–z",
+      "digit": "0–9"
+    }
+  },
+  "alerts": {
+    "disease": {
+      "lateBlight": "Фитофтороз",
+      "earlyBlight": "Ранняя пятнистость",
+      "scanComplete": "Сканирование завершено"
+    },
+    "location": "Ряд {{row}}, Растение #{{plant}}",
+    "scanRow": "Ряд {{row}}",
+    "desc": {
+      "detected": "{{confidence}}% уверенности · {{leafArea}}% поражённой площади листа · {{action}}",
+      "allHealthy": "Все растения здоровы · Проблем не обнаружено"
+    },
+    "action": {
+      "actionRequired": "требуется действие",
+      "monitorClosely": "тщательный мониторинг"
+    },
+    "time": {
+      "minsAgo_one": "{{count}} минуту назад",
+      "minsAgo_few": "{{count}} минуты назад",
+      "minsAgo_many": "{{count}} минут назад",
+      "minsAgo_other": "{{count}} минут назад",
+      "daysAgo_one": "{{count}} день назад",
+      "daysAgo_few": "{{count}} дня назад",
+      "daysAgo_many": "{{count}} дней назад",
+      "daysAgo_other": "{{count}} дней назад"
+    }
+  },
+  "history": {
+    "applied": "Применено на Ряд {{row}}, Растения #{{from}}–#{{to}} · {{type}}",
+    "appliedFullRow": "Применено на Ряд {{row}}, весь ряд · {{type}}",
+    "phiDays": "ОЖУ {{days}} дней",
+    "type": {
+      "biological": "биологический",
+      "chemical": "химический"
     }
   },
   "ui": {

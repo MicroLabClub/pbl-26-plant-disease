@@ -42,7 +42,9 @@ function TreatmentCard({ treatment: tr }: { treatment: Treatment }) {
         <span className={styles.name}>{tr.name}</span>
         <Chip label={isBio ? t('treatment.bioFirst') : t('treatment.chemical')} variant={isBio ? 'green' : 'red'} />
       </div>
-      <p className={styles.desc}>{tr.description}</p>
+      <p className={styles.desc}>
+        {tr.descriptionKey ? t(tr.descriptionKey) : tr.description}
+      </p>
       <div className={styles.tags}>
         {computedTags.map((tag) => (
           <span

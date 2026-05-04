@@ -146,8 +146,12 @@ export function PassportTimeline({ passport }: { passport: PlantPassport }) {
                 {!isLast && <div className={styles.tlLine} />}
               </div>
               <div className={styles.tlBody}>
-                <div className={styles.tlTitle}>{ev.title}</div>
-                <div className={styles.tlDesc}>{ev.description}</div>
+                <div className={styles.tlTitle}>
+                  {ev.titleKey ? t(ev.titleKey) : ev.title}
+                </div>
+                <div className={styles.tlDesc}>
+                  {ev.descKey ? t(ev.descKey, ev.descParams) : ev.description}
+                </div>
                 <div className={styles.tlTime}>
                   {formatDistanceToNow(new Date(ev.timestamp), { addSuffix: true, locale: dateLocale })}
                 </div>

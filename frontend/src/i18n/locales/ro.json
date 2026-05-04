@@ -81,7 +81,9 @@
     "humidity": "Umiditate",
     "disease_one": "{{count}} boală detectată",
     "disease_few": "{{count}} boli detectate",
-    "disease_other": "{{count}} boli detectate"
+    "disease_other": "{{count}} boli detectate",
+    "stereo": "stereo",
+    "hudRow": "Rândul {{row}}"
   },
   "detection": {
     "loading": "Se încarcă…",
@@ -116,6 +118,30 @@
       "low": "Cost mic",
       "medium": "Cost mediu",
       "high": "Cost ridicat"
+    },
+    "desc": {
+      "trichoderma": "Aplicați spray foliar 2g/L. Eficient împotriva a 9 din 9 clase de boli la tomate.",
+      "chlorothalonil": "Folosiți când răspândirea depășește 3+ rânduri. Utilizați echipament de protecție."
+    }
+  },
+  "passport": {
+    "event": {
+      "diseaseHigh": {
+        "title": "Mană târzie detectată — severitate ridicată",
+        "desc": "{{confidence}}% confidență · {{leafArea}}% suprafață foliară · adâncime {{depth}}m"
+      },
+      "earlySymptom": {
+        "title": "Simptom timpuriu — decolorare frunze",
+        "desc": "{{confidence}}% confidență · marcat pentru monitorizare"
+      },
+      "healthyScan": {
+        "title": "Scanare sănătoasă — nicio boală",
+        "desc": "Scanare rând complet · adâncime {{depth}}m"
+      },
+      "created": {
+        "title": "Pașaport creat — ziua transplantului",
+        "desc": "Plantă înregistrată în sistem"
+      }
     }
   },
   "fieldReport": {
@@ -198,6 +224,62 @@
       "area": "Suprafață",
       "inference": "Inferență",
       "time": "Timp"
+    }
+  },
+  "login": {
+    "welcome": "Bun venit înapoi",
+    "createAccount": "Creează cont",
+    "signInSub": "Conectează-te la tabloul de bord pentru detectarea bolilor",
+    "registerSub": "Începe monitorizarea culturilor cu ajutorul AI",
+    "emailLabel": "Email",
+    "passwordLabel": "Parolă",
+    "emailError": "Introduceți o adresă de email validă.",
+    "authError": "Autentificare eșuată. Vă rugăm să încercați din nou.",
+    "networkError": "Imposibil de conectat. Verificați rețeaua și încercați din nou.",
+    "loading": "Vă rugăm să așteptați…",
+    "signIn": "Conectare",
+    "register": "Înregistrare",
+    "noAccount": "Nu ai cont?",
+    "hasAccount": "Ai deja cont?",
+    "pwReq": {
+      "length": "8+ caractere",
+      "uppercase": "A–Z",
+      "lowercase": "a–z",
+      "digit": "0–9"
+    }
+  },
+  "alerts": {
+    "disease": {
+      "lateBlight": "Mană târzie",
+      "earlyBlight": "Mană timpurie",
+      "scanComplete": "Scanare completă"
+    },
+    "location": "Rândul {{row}}, Planta #{{plant}}",
+    "scanRow": "Rândul {{row}}",
+    "desc": {
+      "detected": "{{confidence}}% confidență · {{leafArea}}% suprafață foliară afectată · {{action}}",
+      "allHealthy": "Toate plantele sănătoase · Nicio problemă detectată"
+    },
+    "action": {
+      "actionRequired": "acțiune necesară",
+      "monitorClosely": "monitorizare atentă"
+    },
+    "time": {
+      "minsAgo_one": "acum {{count}} minut",
+      "minsAgo_few": "acum {{count}} minute",
+      "minsAgo_other": "acum {{count}} minute",
+      "daysAgo_one": "acum {{count}} zi",
+      "daysAgo_few": "acum {{count}} zile",
+      "daysAgo_other": "acum {{count}} zile"
+    }
+  },
+  "history": {
+    "applied": "Aplicat pe Rândul {{row}}, Plantele #{{from}}–#{{to}} · {{type}}",
+    "appliedFullRow": "Aplicat pe Rândul {{row}}, rând complet · {{type}}",
+    "phiDays": "PHI {{days}} zile",
+    "type": {
+      "biological": "biologic",
+      "chemical": "chimic"
     }
   },
   "ui": {
