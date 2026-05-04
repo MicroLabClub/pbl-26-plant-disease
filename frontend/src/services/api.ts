@@ -35,6 +35,18 @@ export const tokenStore = {
   },
 };
 
+export function isAccessTokenExpired(): boolean {
+  const token = tokenStore.getAccess();
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    // 10s buffer to avoid edge cases near expiry
+    return Date.now() >= payload.exp * 1000 - 10_000;
+  } catch {
+    return true;
+  }
+}
+
 export class AuthError extends Error {
   constructor() {
     super("Unauthorized");
