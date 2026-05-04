@@ -13,7 +13,7 @@ export function TreatmentsPage() {
           <p className={styles.pageSub}>{t('recommendations.subtitle')}</p>
         </div>
       </div>
-      <TreatmentPanel treatments={MOCK_TREATMENTS} diseaseName="Late blight" />
+      <TreatmentPanel treatments={MOCK_TREATMENTS} diseaseName={t('alerts.disease.lateBlight')} />
     </div>
   );
 }

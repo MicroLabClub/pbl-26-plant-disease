@@ -7,7 +7,7 @@ import { MOCK_PASSPORT, MOCK_TREATMENTS } from '@/services/api';
 import styles from './FieldReport.module.css';
 
 export function FieldReportPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: stats } = useDashboardStats();
   const { data: detections } = useDetections(1);
   const criticalCount = detections?.filter(d => d.severity === 'critical').length ?? 0;
@@ -21,7 +21,7 @@ export function FieldReportPage() {
           <h1 className={styles.pageHead}>{t('fieldReport.title')}</h1>
           <p className={styles.pageSub}>
             {t('fieldReport.subtitle')} ·{' '}
-            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            {new Date().toLocaleDateString(i18n.language, { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         </div>
         <div className={styles.tbRight}>
@@ -63,7 +63,7 @@ export function FieldReportPage() {
       {/* Main grid: detection log + treatment */}
       <div className={styles.mainGrid}>
         <DetectionList />
-        <TreatmentPanel treatments={MOCK_TREATMENTS} diseaseName="Late blight" />
+        <TreatmentPanel treatments={MOCK_TREATMENTS} diseaseName={t('alerts.disease.lateBlight')} />
       </div>
 
       {/* Bottom grid: passport + zone map */}
