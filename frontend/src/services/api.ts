@@ -296,6 +296,9 @@ export const MOCK_PASSPORT: PlantPassport = {
       description: "94.2% confidence · 18% leaf area · depth 0.42m",
       confidence: 0.942,
       severity: "critical",
+      titleKey: "passport.event.diseaseHigh.title",
+      descKey: "passport.event.diseaseHigh.desc",
+      descParams: { confidence: 94.2, leafArea: 18, depth: 0.42 },
     },
     {
       id: "ev-003",
@@ -305,6 +308,9 @@ export const MOCK_PASSPORT: PlantPassport = {
       description: "71% confidence · flagged for watch",
       confidence: 0.71,
       severity: "warning",
+      titleKey: "passport.event.earlySymptom.title",
+      descKey: "passport.event.earlySymptom.desc",
+      descParams: { confidence: 71 },
     },
     {
       id: "ev-002",
@@ -313,6 +319,9 @@ export const MOCK_PASSPORT: PlantPassport = {
       title: "Healthy scan — no disease",
       description: "Full row scan · depth 1.1m",
       severity: "healthy",
+      titleKey: "passport.event.healthyScan.title",
+      descKey: "passport.event.healthyScan.desc",
+      descParams: { depth: 1.1 },
     },
     {
       id: "ev-001",
@@ -320,6 +329,8 @@ export const MOCK_PASSPORT: PlantPassport = {
       timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
       title: "Passport created — transplant day",
       description: "Plant registered in system",
+      titleKey: "passport.event.created.title",
+      descKey: "passport.event.created.desc",
     },
   ],
   severityHistory: Array.from({ length: 9 }, (_, i) => ({
@@ -338,6 +349,7 @@ export const MOCK_TREATMENTS: Treatment[] = [
     rank: 1,
     description:
       "Apply 2g/L foliar spray. Works against 9 of 9 tomato disease classes.",
+    descriptionKey: "treatment.desc.trichoderma",
     dosage: "2g/L foliar spray",
     repeatAfterDays: 7,
     phiDays: 0,
@@ -350,6 +362,7 @@ export const MOCK_TREATMENTS: Treatment[] = [
     type: "chemical",
     rank: 2,
     description: "Use if spread exceeds 3+ rows. Use protective gear.",
+    descriptionKey: "treatment.desc.chlorothalonil",
     dosage: "1.5g/L",
     repeatAfterDays: 10,
     phiDays: 7,

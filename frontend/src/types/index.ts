@@ -124,6 +124,9 @@ export interface PassportEvent {
   detectionId?: string;
   confidence?: number;
   severity?: DetectionSeverity;
+  titleKey?: string;
+  descKey?: string;
+  descParams?: Record<string, unknown>;
 }
 
 export interface PlantPassport {
@@ -146,6 +149,7 @@ export interface Treatment {
   type: TreatmentType;
   rank: number; // 1 = bio-first
   description: string;
+  descriptionKey?: string;
   dosage: string;
   repeatAfterDays: number;
   phiDays: number; // pre-harvest interval
