@@ -12,15 +12,18 @@ public sealed class DetectionsController(
     IMediator mediator,
     ILogger<DetectionsController> logger) : AppControllerBase(logger)
 {
-    /// <summary>List recent detections, newest first. Requires authentication.</summary>
+    /// <summary>List recent detections, newest first. Requires `admin` or `agriculture` role.</summary>
     /// <param name="limit">Number of detections to return (1–200, default 20).</param>
     /// <response code="200">Detections array, newest first. Empty array if none.</response>
     /// <response code="400">Validation error — `limit` must be greater than zero.</response>
     /// <response code="401">Caller is not authenticated.</response>
+    /// <response code="403">Caller is authenticated but lacks the required role.</response>
     [HttpGet]
+    [Authorize(Roles = "admin,agriculture")]
     [ProducesResponseType(typeof(IReadOnlyList<DetectionDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public Task<IActionResult> GetAll(
         [FromQuery] int limit = 20,
@@ -28,13 +31,16 @@ public sealed class DetectionsController(
         ExecuteAsync(async () =>
             Ok(await mediator.Send(new GetDetectionsQuery(limit), cancellationToken)));
 
-    /// <summary>Fetch a single detection by id. Requires authentication.</summary>
+    /// <summary>Fetch a single detection by id. Requires `admin` or `agriculture` role.</summary>
     /// <response code="200">Detection found.</response>
     /// <response code="401">Caller is not authenticated.</response>
+    /// <response code="403">Caller is authenticated but lacks the required role.</response>
     /// <response code="404">No detection with that id.</response>
     [HttpGet("{id:guid}", Name = nameof(GetById))]
+    [Authorize(Roles = "admin,agriculture")]
     [ProducesResponseType(typeof(DetectionDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public Task<IActionResult> GetById(
@@ -46,15 +52,17 @@ public sealed class DetectionsController(
             return dto is null ? NotFound() : Ok(dto);
         });
 
-    /// <summary>Ingest a new detection. Auto-creates the referenced Plant if missing.</summary>
+    /// <summary>Ingest a new detection. Auto-creates the referenced Plant if missing. Requires the `admin` role.</summary>
     /// <response code="201">Detection created. The `Location` header points to the new resource.</response>
     /// <response code="400">Validation error.</response>
     /// <response code="401">Caller is not authenticated.</response>
+    /// <response code="403">Caller is authenticated but lacks the admin role.</response>
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public Task<IActionResult> Create(
         [FromBody] CreateDetectionCommand command,
@@ -65,16 +73,18 @@ public sealed class DetectionsController(
             return CreatedAtRoute(nameof(GetById), new { id }, new { id });
         });
 
-    /// <summary>Replace a detection's contents. PUT semantics — full replacement, not patch.</summary>
+    /// <summary>Replace a detection's contents. PUT semantics — full replacement, not patch. Requires the `admin` role.</summary>
     /// <response code="204">Update succeeded.</response>
     /// <response code="400">Validation error.</response>
     /// <response code="401">Caller is not authenticated.</response>
+    /// <response code="403">Caller is authenticated but lacks the admin role.</response>
     /// <response code="404">No detection with that id.</response>
     [HttpPut("{id:guid}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public Task<IActionResult> Update(
@@ -94,13 +104,15 @@ public sealed class DetectionsController(
             return NoContent();
         });
 
-    /// <summary>Delete a detection. Idempotent — missing ids still return 204.</summary>
+    /// <summary>Delete a detection. Idempotent — missing ids still return 204. Requires the `admin` role.</summary>
     /// <response code="204">Delete succeeded (or detection was already absent).</response>
     /// <response code="401">Caller is not authenticated.</response>
+    /// <response code="403">Caller is authenticated but lacks the admin role.</response>
     [HttpDelete("{id:guid}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public Task<IActionResult> Delete(
         Guid id,
