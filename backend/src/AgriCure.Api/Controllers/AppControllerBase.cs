@@ -47,7 +47,9 @@ public abstract class AppControllerBase : ControllerBase
                     ToCamelCase(failure.PropertyName),
                     failure.ErrorMessage);
             }
-            return ValidationProblem(modelState);
+            return ValidationProblem(
+                modelStateDictionary: modelState,
+                statusCode: StatusCodes.Status422UnprocessableEntity);
         }
         catch (AuthenticationFailedException ex)
         {
@@ -70,6 +72,17 @@ public abstract class AppControllerBase : ControllerBase
                 title: "Not found.",
                 detail: ex.Message,
                 statusCode: StatusCodes.Status404NotFound);
+        }
+        catch (ConflictException ex)
+        {
+            Logger.LogInformation(
+                "Conflict in {Controller}.{Action}: {Message}",
+                controllerName, actionName, ex.Message);
+
+            return Problem(
+                title: "Conflict.",
+                detail: ex.Message,
+                statusCode: StatusCodes.Status409Conflict);
         }
         catch (UnprocessableEntityException ex)
         {

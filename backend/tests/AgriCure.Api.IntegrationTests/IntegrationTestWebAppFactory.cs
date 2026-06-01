@@ -1,7 +1,6 @@
-using AgriCure.Api.IntegrationTests.TestSurfaces;
+using AgriCure.Application.Common.Pictures;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
@@ -31,17 +30,24 @@ public sealed class IntegrationTestWebAppFactory : WebApplicationFactory<Program
                 ["Jwt:RefreshTokenDays"] = "7",
                 ["Cors:AllowedOrigins:0"] = "http://localhost:5173",
                 // Storage settings — required because StorageOptions ValidateOnStart.
-                // Tests don't actually upload anything but the validator runs at startup.
+                // IPictureService is replaced by FakePictureService below so no real MinIO is needed.
                 ["Storage:Endpoint"] = "localhost:9000",
                 ["Storage:AccessKey"] = "minioadmin",
                 ["Storage:SecretKey"] = "minioadmin",
             });
         });
 
-        builder.ConfigureTestServices(services =>
+        builder.ConfigureServices(services =>
         {
-            services.AddControllers()
-                .AddApplicationPart(typeof(ApiKeyProbeController).Assembly);
+            // Replace the real MinIO-backed picture service with an in-process stub
+            // that writes the Picture row directly to the DB and skips storage calls.
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(IPictureService));
+            if (descriptor is not null)
+            {
+                services.Remove(descriptor);
+            }
+            services.AddScoped<IPictureService, FakePictureService>();
         });
     }
 }
