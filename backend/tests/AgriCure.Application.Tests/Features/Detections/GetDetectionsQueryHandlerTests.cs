@@ -109,6 +109,7 @@ public sealed class GetDetectionsQueryHandlerTests
         public bool IsAuthenticated => _userId is not null;
         public bool IsAdmin { get; }
         public bool IsAgriculture => !IsAdmin && _userId is not null;
+        public bool IsSystem => false;
         public Guid RequireUserId() => _userId ?? throw new InvalidOperationException("no user");
     }
 
@@ -119,6 +120,7 @@ public sealed class GetDetectionsQueryHandlerTests
         public DbSet<ClassPrediction> Predictions => inner.Predictions;
         public DbSet<Plant> Plants => inner.Plants;
         public DbSet<AgriCure.Domain.Pictures.Picture> Pictures => inner.Pictures;
+        public DbSet<AgriCure.Domain.Identity.ApiKey> ApiKeys => inner.ApiKeys;
         public Task<int> SaveChangesAsync(CancellationToken ct) => inner.SaveChangesAsync(ct);
     }
 
@@ -129,6 +131,7 @@ public sealed class GetDetectionsQueryHandlerTests
         public DbSet<ClassPrediction> Predictions => Set<ClassPrediction>();
         public DbSet<AgriCure.Domain.Pictures.Picture> Pictures => Set<AgriCure.Domain.Pictures.Picture>();
         public DbSet<AgriCure.Domain.Identity.RefreshToken> RefreshTokens => Set<AgriCure.Domain.Identity.RefreshToken>();
+        public DbSet<AgriCure.Domain.Identity.ApiKey> ApiKeys => Set<AgriCure.Domain.Identity.ApiKey>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

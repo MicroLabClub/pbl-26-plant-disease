@@ -1,8 +1,10 @@
 using System.Text;
+using AgriCure.Application.Common.ApiKeys;
 using AgriCure.Application.Common.Auth;
 using AgriCure.Application.Common.Interfaces;
 using AgriCure.Application.Common.Pictures;
 using AgriCure.Application.Common.Storage;
+using AgriCure.Infrastructure.ApiKeys;
 using AgriCure.Infrastructure.Auth;
 using AgriCure.Infrastructure.Identity;
 using AgriCure.Infrastructure.Persistence;
@@ -77,7 +79,10 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
+            .AddJwtBearer()
+            .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(
+                ApiKeyAuthorization.Scheme,
+                _ => { });
 
         services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
             .Configure<IOptions<JwtOptions>>((jwtBearerOpts, jwtOpts) =>
@@ -97,7 +102,15 @@ public static class DependencyInjection
                 };
             });
 
-        services.AddAuthorization();
+        services.AddAuthorization(opts =>
+        {
+            opts.AddPolicy(ApiKeyAuthorization.IngestPolicy, policy =>
+            {
+                policy.AuthenticationSchemes = new[] { ApiKeyAuthorization.Scheme };
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim(ApiKeyAuthorization.ScopeClaimType, ApiKeyAuthorization.IngestScope);
+            });
+        });
 
         services.AddOptions<StorageOptions>()
             .BindConfiguration(StorageOptions.SectionName)
@@ -130,6 +143,8 @@ public static class DependencyInjection
         services.AddHostedService<MinioBucketProvisioner>();
 
         services.AddScoped<IPictureService, PictureService>();
+
+        services.AddScoped<IApiKeyService, ApiKeyService>();
 
         return services;
     }
