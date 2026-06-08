@@ -153,6 +153,10 @@
     "actNow": "Act now",
     "bioFirst": "Bio-first",
     "chemical": "Chemical",
+    "apply": "Apply to plant",
+    "applying": "Applying…",
+    "applied": "Applied {{name}} to {{plant}}.",
+    "applyError": "Couldn't record the treatment. Pick a plant you own and try again.",
     "type": {
       "biological": "Bio-first",
       "chemical": "Chemical"
@@ -208,6 +212,10 @@
   "plantPassport": {
     "title": "Plant Passport",
     "subtitle": "Health timeline — Plant #023 · Row 7"
+  },
+  "passportApply": {
+    "title": "Apply a treatment",
+    "hint": "Record a treatment applied to {{plant}}. It will appear on the timeline above and in Treatment history."
   },
   "recommendations": {
     "title": "Recommendations",
