@@ -1,0 +1,18 @@
+# GHCR image-based deploy for the MicroLab shared server (CI fallback).
+#
+# Unlike the root ./docker-compose.yml (which builds on the box), this pulls a
+# pre-built frontend image from GHCR — used by the GitHub Actions workflow
+# .github/workflows/microlab-frontend.yml so the memory-hungry `npm run build`
+# runs on GitHub's runners instead of the 3.8 GB shared host.
+#
+# IMAGE_FRONTEND is supplied via a .env file written by the workflow, e.g.
+#   IMAGE_FRONTEND=ghcr.io/microlabclub/pbl-26-plant-disease-frontend:<sha>
+# VITE_API_BASE_URL is already baked into that image at build time.
+services:
+  web:
+    image: ${IMAGE_FRONTEND}
+    container_name: pbl26-plant-disease-26-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9005:80"   # the only host binding allowed on this box
+    mem_limit: 256m
