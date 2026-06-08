@@ -1,0 +1,29 @@
+# Frontend-only deploy for the MicroLab shared server (plant-disease-26).
+#
+# The backend API + MinIO already run on agricure.online, so this stack
+# ONLY builds and serves the React/Vite frontend. The bundle is configured
+# at build time to call the remote API directly (VITE_API_BASE_URL).
+#
+# Hard constraint of the shared box: the ONLY publicly reachable binding is
+# 127.0.0.1:9005 (host nginx proxies https://plant-disease-26.microlab.club
+# -> 127.0.0.1:9005). A DOCKER-USER iptables rule drops external traffic to
+# 9001-9006, so never use "9005:80" or "0.0.0.0:9005:80".
+#
+# Deploy on the server:
+#   git pull
+#   docker compose up -d --build
+#   curl -s http://127.0.0.1:9005/        # local sanity check
+#   # then open https://plant-disease-26.microlab.club/
+services:
+  web:
+    build:
+      context: ./frontend
+      args:
+        # Baked into the bundle at build time (Vite resolves import.meta.env
+        # during `npm run build`). Points the SPA at the existing backend.
+        VITE_API_BASE_URL: https://api.agricure.online
+    container_name: pbl26-plant-disease-26-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9005:80"   # 80 = nginx inside the frontend image
+    mem_limit: 256m
