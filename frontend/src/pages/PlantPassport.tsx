@@ -61,14 +61,14 @@ export function PlantPassportPage() {
               label: `${p.plantId}${p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}`,
             }))}
           />
-<!--           <select className={styles.select} value={selected ?? ''} onChange={(e) => choose(e.target.value)}>
-            <option value="">{t('plantPassport.choose')}</option>
-            {plants.map((p) => (
-              <option key={p.plantId} value={p.plantId}>
-                {p.plantId}{p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}
-              </option>
-            ))}
-          </select> -->
+          // <select className={styles.select} value={selected ?? ''} onChange={(e) => choose(e.target.value)}>
+          //   <option value="">{t('plantPassport.choose')}</option>
+          //   {plants.map((p) => (
+          //     <option key={p.plantId} value={p.plantId}>
+          //       {p.plantId}{p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}
+          //     </option>
+          //   ))}
+          // </select>
 
         )}
       </div>
