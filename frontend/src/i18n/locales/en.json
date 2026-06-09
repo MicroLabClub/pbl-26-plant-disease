@@ -89,7 +89,8 @@
   },
   "common": {
     "loading": "Loading…",
-    "loadError": "Couldn't load data. Please try again."
+    "loadError": "Couldn't load data. Please try again.",
+    "retry": "Try again"
   },
   "plants": {
     "title": "Plants",
@@ -163,7 +164,8 @@
       "diseaseActive": "Disease active",
       "healthy": "Healthy",
       "sparkStart": "Apr 13",
-      "sparkEnd": "Today"
+      "sparkEnd": "Today",
+      "viewPhoto": "View captured photo"
     }
   },
   "treatment": {
@@ -230,7 +232,13 @@
   },
   "plantPassport": {
     "title": "Plant Passport",
-    "subtitle": "Health timeline — Plant #023 · Row 7"
+    "subtitle": "Health timeline",
+    "subtitleFor": "Health timeline — Plant #{{id}} · Row {{row}}",
+    "subtitlePick": "Pick a plant to see its full health history",
+    "choose": "Select a plant…",
+    "pickTitle": "Select a plant",
+    "pickSub_one": "Choose one of your {{count}} plants to view its passport.",
+    "pickSub_other": "Choose one of your {{count}} plants to view its passport."
   },
   "passportApply": {
     "title": "Apply a treatment",
