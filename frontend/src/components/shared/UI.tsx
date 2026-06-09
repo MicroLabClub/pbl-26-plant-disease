@@ -1,5 +1,6 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronDown, Check } from 'lucide-react';
 import styles from './UI.module.css';
 
 // ── Card ──────────────────────────────────────────────────
@@ -105,6 +106,78 @@ export function AlertStrip({
 function ReviewNowLabel() {
   const { t } = useTranslation();
   return <>{t('ui.reviewNow')}</>;
+}
+
+// ── Select ────────────────────────────────────────────────
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
+export function Select({
+  value,
+  onChange,
+  options,
+  disabled,
+  className,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  options: SelectOption[];
+  disabled?: boolean;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handle(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handle);
+    return () => document.removeEventListener('mousedown', handle);
+  }, []);
+
+  const selected = options.find((o) => o.value === value);
+
+  return (
+    <div ref={ref} className={[styles.selectWrap, className ?? ''].join(' ')}>
+      <button
+        type="button"
+        className={[styles.selectTrigger, open ? styles.selectTriggerOpen : ''].join(' ')}
+        onClick={() => !disabled && setOpen((o) => !o)}
+        disabled={disabled}
+      >
+        <span className={styles.selectValue}>{selected?.label ?? '—'}</span>
+        <ChevronDown
+          size={14}
+          className={[styles.selectChevron, open ? styles.selectChevronUp : ''].join(' ')}
+        />
+      </button>
+
+      {open && (
+        <div className={styles.selectDropdown}>
+          {options.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              className={[
+                styles.selectOption,
+                opt.value === value ? styles.selectOptionActive : '',
+              ].join(' ')}
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+            >
+              <span className={styles.selectOptionCheck}>
+                {opt.value === value && <Check size={12} />}
+              </span>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ── Loading skeleton ──────────────────────────────────────

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreatmentPanel } from '@/components/treatment/TreatmentPanel';
+import { Select } from '@/components/shared/UI';
 import { useTreatments, usePlants } from '@/hooks/useApi';
 import { api } from '@/services/api';
 import type { DiseaseClass, Treatment } from '@/types';
@@ -58,19 +59,20 @@ export function TreatmentsPage() {
           <p className={styles.pageSub}>{t('recommendations.subtitle')}</p>
         </div>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <select className={styles.select} value={disease} onChange={(e) => setDisease(e.target.value as DiseaseClass)}>
-            {DISEASES.map((d) => (
-              <option key={d} value={d}>{t(`disease.${d}`)}</option>
-            ))}
-          </select>
+          <Select
+            value={disease}
+            onChange={(v) => setDisease(v as DiseaseClass)}
+            options={DISEASES.map((d) => ({ value: d, label: t(`disease.${d}`) }))}
+          />
           {plants && plants.length > 0 && (
-            <select className={styles.select} value={plantId} onChange={(e) => setPlantId(e.target.value)}>
-              {plants.map((p) => (
-                <option key={p.plantId} value={p.plantId}>
-                  {p.plantId}{p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}
-                </option>
-              ))}
-            </select>
+            <Select
+              value={plantId}
+              onChange={setPlantId}
+              options={plants.map((p) => ({
+                value: p.plantId,
+                label: `${p.plantId}${p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}`,
+              }))}
+            />
           )}
         </div>
       </div>
