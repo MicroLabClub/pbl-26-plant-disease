@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDistanceToNow } from 'date-fns';
+import { Select } from '@/components/shared/UI';
 import { api } from '@/services/api';
 import type { ApiKey, ApiKeyCreated, User } from '@/types';
 import styles from './shared.module.css';
@@ -76,17 +77,11 @@ export function AdminApiKeysPage() {
           <div className={styles.field}>
             <label className={styles.fieldLabel} htmlFor="owner">{t('apiKeys.ownerLabel')}</label>
             {users.length > 0 ? (
-              <select
-                id="owner"
-                className={styles.input}
+              <Select
                 value={ownerUserId}
-                onChange={(e) => setOwnerUserId(e.target.value)}
-                required
-              >
-                {users.map((u) => (
-                  <option key={u.id} value={u.id}>{u.email}</option>
-                ))}
-              </select>
+                onChange={setOwnerUserId}
+                options={users.map((u) => ({ value: u.id, label: u.email }))}
+              />
             ) : (
               <p className={styles.empty}>{t('apiKeys.noAgricultureUsers')}</p>
             )}

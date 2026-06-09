@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { PassportTimeline } from '@/components/detection/DetectionList';
+import { Select } from '@/components/shared/UI';
 import { usePlants, usePassport, useTreatments } from '@/hooks/useApi';
 import { api } from '@/services/api';
 import type { DiseaseClass } from '@/types';
@@ -46,17 +47,14 @@ export function PlantPassportPage() {
           <p className={styles.pageSub}>{t('plantPassport.subtitle')}</p>
         </div>
         {plants && plants.length > 0 && (
-          <select
-            className={styles.select}
+          <Select
             value={selected ?? ''}
-            onChange={(e) => choose(e.target.value)}
-          >
-            {plants.map((p) => (
-              <option key={p.plantId} value={p.plantId}>
-                {p.plantId}{p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}
-              </option>
-            ))}
-          </select>
+            onChange={choose}
+            options={plants.map((p) => ({
+              value: p.plantId,
+              label: `${p.plantId}${p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}`,
+            }))}
+          />
         )}
       </div>
 
@@ -117,21 +115,17 @@ function ApplyTreatmentPanel({ plantId, onApplied }: { plantId: string; onApplie
       <div className={styles.cardSub}>{t('passportApply.hint', { plant: plantId })}</div>
 
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-        <select className={styles.select} value={disease} onChange={(e) => setDisease(e.target.value as DiseaseClass)}>
-          {DISEASES.map((d) => (
-            <option key={d} value={d}>{t(`disease.${d}`)}</option>
-          ))}
-        </select>
-        <select
-          className={styles.select}
+        <Select
+          value={disease}
+          onChange={(v) => setDisease(v as DiseaseClass)}
+          options={DISEASES.map((d) => ({ value: d, label: t(`disease.${d}`) }))}
+        />
+        <Select
           value={treatmentId}
-          onChange={(e) => setTreatmentId(e.target.value)}
+          onChange={setTreatmentId}
+          options={(treatments ?? []).map((tr) => ({ value: tr.id, label: `${tr.name} — ${tr.dosage}` }))}
           disabled={!treatments || treatments.length === 0}
-        >
-          {(treatments ?? []).map((tr) => (
-            <option key={tr.id} value={tr.id}>{tr.name} — {tr.dosage}</option>
-          ))}
-        </select>
+        />
         <button className={styles.btn} onClick={apply} disabled={applying || !treatmentId}>
           {applying ? t('treatment.applying') : t('treatment.apply')}
         </button>
