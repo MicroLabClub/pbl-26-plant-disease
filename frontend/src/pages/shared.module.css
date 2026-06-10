@@ -225,27 +225,41 @@
 /* ── Plant picker grid ── */
 .pickGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  max-width: 720px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  max-width: 920px;
   margin: 0 auto;
   text-align: left;
 }
 .pickItem {
-  display: flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 12px;
   background: var(--white);
   border: 1px solid var(--br);
   border-radius: var(--r-12);
-  padding: 11px 13px;
+  padding: 14px;
   cursor: pointer;
   font: inherit;
+  text-align: left;
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
-.pickItem:hover { border-color: var(--br-2); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.pickItem:hover { border-color: var(--br-2); box-shadow: var(--shadow-md, var(--shadow-sm)); transform: translateY(-2px); }
 .pickItemActive { border-color: var(--forest-3); box-shadow: 0 0 0 1px var(--forest-3); }
-.pickDot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.pickName { font-size: 13px; font-weight: 600; color: var(--bark); }
-.pickRow { font-size: 11px; color: var(--txt-3); margin-top: 1px; }
+.pickIcon {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px;
+  flex-shrink: 0;
+}
+.pickInfo {
+  display: flex; flex-direction: column; gap: 2px;
+  flex: 1; min-width: 0;
+}
+.pickName { font-size: 14px; font-weight: 600; color: var(--bark); }
+.pickRow { font-size: 12px; color: var(--txt-3); }
+.pickBadge {
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 999px;
+  white-space: nowrap; flex-shrink: 0;
+}
 
 @media (max-width: 900px) {
   .grid2, .grid3 { grid-template-columns: 1fr; }
