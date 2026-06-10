@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-import { ro, ru, enUS } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { usePlants } from '@/hooks/useApi';
 import type { DetectionSeverity, PlantSummary } from '@/types';
 import styles from './shared.module.css';
@@ -13,9 +13,9 @@ const SEVERITY_CHIP: Record<DetectionSeverity, string> = {
 };
 
 export function PlantsPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { data: plants, loading } = usePlants();
-  const locale = i18n.language === 'ro' ? ro : i18n.language === 'ru' ? ru : enUS;
+  const locale = enUS;
 
   function severityChip(p: PlantSummary) {
     if (!p.latestSeverity) {

@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { formatDistanceToNow } from 'date-fns';
-import { ro, ru, enUS } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { useAppliedTreatments } from '@/hooks/useApi';
 import type { AppliedTreatment } from '@/types';
 import styles from './shared.module.css';
 
 export function TreatmentHistoryPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { data: history, loading } = useAppliedTreatments();
-  const locale = i18n.language === 'ro' ? ro : i18n.language === 'ru' ? ru : enUS;
+  const locale = enUS;
 
   function dotColor(h: AppliedTreatment) {
     return h.type === 'biological' ? 'var(--forest-3)' : '#f59e0b';
