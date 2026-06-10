@@ -159,3 +159,127 @@
   50% { opacity: 0.65; box-shadow: 0 0 16px rgba(74, 222, 128, 0.85); }
 }
 
+/* ── Mobile bottom tab bar & "More" sheet ── */
+.bottomNav {
+  display: none;
+}
+
+.overlay {
+  display: none;
+}
+
+.moreSheet {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+
+  .bottomNav {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60px;
+    background: linear-gradient(180deg, #1d3529 0%, #162a1f 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 50;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .bottomItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .bottomIcon {
+    position: relative;
+    display: flex;
+  }
+
+  .bottomLabel {
+    font-size: 9.5px;
+    font-weight: 600;
+  }
+
+  .bottomItemActive {
+    color: #95d4ae;
+  }
+
+  .bottomItem .liveDot {
+    position: absolute;
+    top: -2px;
+    right: -5px;
+    margin-left: 0;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 35, 24, 0.4);
+    z-index: 49;
+  }
+
+  .moreSheet {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    z-index: 50;
+    background: linear-gradient(180deg, #1d3529 0%, #162a1f 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px 16px 0 0;
+    padding: 10px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    box-shadow: var(--shadow-lg);
+    animation: sheetIn 0.2s ease;
+  }
+
+  @keyframes sheetIn {
+    from { transform: translateY(12px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .moreItem {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .moreItem.active {
+    background: rgba(95, 170, 130, 0.18);
+    color: #95d4ae;
+    font-weight: 600;
+  }
+}
+

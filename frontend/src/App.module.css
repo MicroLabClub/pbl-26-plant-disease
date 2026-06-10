@@ -35,6 +35,17 @@
   line-height: 1.6;
 }
 
+@media (max-width: 900px) {
+  .shell {
+    display: block;
+  }
+
+  .content {
+    min-height: 100vh;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+}
+
 @media print {
   .shell {
     display: block !important;
@@ -44,5 +55,6 @@
     min-height: unset !important;
     background: white !important;
     background-image: none !important;
+    padding-bottom: 0 !important;
   }
 }

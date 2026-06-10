@@ -264,4 +264,24 @@
 @media (max-width: 900px) {
   .grid2, .grid3 { grid-template-columns: 1fr; }
   .page { padding: 16px; }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .pageHead { font-size: 24px; }
+
+  .select { max-width: 100%; }
+
+  .pickGrid { grid-template-columns: 1fr; }
+
+  .listItem {
+    flex-wrap: wrap;
+  }
+
+  .listItem > button {
+    margin-left: auto;
+  }
 }
