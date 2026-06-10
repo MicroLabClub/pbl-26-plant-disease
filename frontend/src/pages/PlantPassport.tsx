@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Leaf, Star } from 'lucide-react';
 import { PassportTimeline } from '@/components/detection/DetectionList';
 import { Select } from '@/components/shared/UI';
 import { usePlants, usePassport, useTreatments } from '@/hooks/useApi';
@@ -22,6 +22,10 @@ const DISEASES: DiseaseClass[] = [
 
 function severityColor(s: DetectionSeverity | null) {
   return s === 'critical' ? '#ef4444' : s === 'warning' ? '#f59e0b' : 'var(--forest-3)';
+}
+
+function severityLabelKey(s: DetectionSeverity | null) {
+  return s === 'critical' ? 'detection.severity.critical' : s === 'warning' ? 'detection.severity.warning' : 'detection.severity.healthy';
 }
 
 export function PlantPassportPage() {
@@ -61,15 +65,6 @@ export function PlantPassportPage() {
               label: `${p.plantId}${p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}`,
             }))}
           />
-          // <select className={styles.select} value={selected ?? ''} onChange={(e) => choose(e.target.value)}>
-          //   <option value="">{t('plantPassport.choose')}</option>
-          //   {plants.map((p) => (
-          //     <option key={p.plantId} value={p.plantId}>
-          //       {p.plantId}{p.row != null ? ` · ${t('plants.rowShort', { row: p.row })}` : ''}
-          //     </option>
-          //   ))}
-          // </select>
-
         )}
       </div>
 
@@ -119,14 +114,20 @@ export function PlantPassportPage() {
 
 function PlantPickButton({ plant, onPick }: { plant: PlantSummary; onPick: () => void }) {
   const { t } = useTranslation();
+  const color = severityColor(plant.latestSeverity);
   return (
     <button className={styles.pickItem} onClick={onPick}>
-      <span className={styles.pickDot} style={{ background: severityColor(plant.latestSeverity) }} />
-      <span>
+      <span className={styles.pickIcon} style={{ color, background: `${color}1a` }}>
+        <Leaf size={18} />
+      </span>
+      <span className={styles.pickInfo}>
         <span className={styles.pickName}>{plant.plantId}</span>
         <span className={styles.pickRow}>
           {plant.row != null ? t('plants.rowShort', { row: plant.row }) : t('plants.noScans')}
         </span>
+      </span>
+      <span className={styles.pickBadge} style={{ color, background: `${color}1a` }}>
+        {t(severityLabelKey(plant.latestSeverity))}
       </span>
     </button>
   );
