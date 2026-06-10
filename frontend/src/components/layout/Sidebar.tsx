@@ -17,14 +17,8 @@ interface NavItem {
   adminOnly?: boolean;
 }
 
-const LANGUAGES = [
-  { code: 'en', label: 'EN' },
-  { code: 'ro', label: 'RO' },
-  { code: 'ru', label: 'RU' },
-] as const;
-
 export function Sidebar() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { logout, isAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -68,11 +62,6 @@ export function Sidebar() {
     .map((group) => ({ ...group, items: group.items.filter((i) => !i.adminOnly || isAdmin) }))
     .filter((group) => group.items.length > 0);
 
-  const changeLanguage = (code: string) => {
-    i18n.changeLanguage(code);
-    localStorage.setItem('agricure-lang', code);
-  };
-
   return (
     <aside className={styles.sidebar}>
       {/* Logo */}
@@ -109,20 +98,6 @@ export function Sidebar() {
           </div>
         ))}
       </nav>
-
-      {/* Language switcher */}
-      <div className={styles.langSwitcher}>
-        {LANGUAGES.map((lang) => (
-          <button
-            key={lang.code}
-            className={[styles.langBtn, i18n.language === lang.code ? styles.langBtnActive : ''].join(' ')}
-            onClick={() => changeLanguage(lang.code)}
-          >
-            {lang.label}
-          </button>
-        ))}
-      </div>
-
     </aside>
   );
 }
