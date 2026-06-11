@@ -1,17 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, Chip } from '@/components/shared/UI';
 import { useDetections } from '@/hooks/useApi';
 import type { Detection, PlantPassport } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { ro, ru, enUS } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import styles from './Detection.module.css';
-
-function useDateLocale() {
-  const { i18n } = useTranslation();
-  if (i18n.language === 'ro') return ro;
-  if (i18n.language === 'ru') return ru;
-  return enUS;
-}
 
 // ── Detection list ────────────────────────────────────────
 
@@ -35,7 +29,7 @@ export function DetectionList() {
 
 function DetectionItem({ detection: d }: { detection: Detection }) {
   const { t } = useTranslation();
-  const dateLocale = useDateLocale();
+  const dateLocale = enUS;
   const variantMap = { critical: 'r', warning: 'a', healthy: 'g' } as const;
   const v = variantMap[d.severity];
 
@@ -82,7 +76,17 @@ function DetectionItem({ detection: d }: { detection: Detection }) {
 
 export function PassportTimeline({ passport }: { passport: PlantPassport }) {
   const { t } = useTranslation();
-  const dateLocale = useDateLocale();
+  const dateLocale = enUS;
+
+  // Lightbox: the URL of the frame currently enlarged, or null when closed.
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox]);
 
   const typeColor: Record<string, string> = {
     disease: 'r',
@@ -152,6 +156,16 @@ export function PassportTimeline({ passport }: { passport: PlantPassport }) {
                 <div className={styles.tlDesc}>
                   {ev.descKey ? t(ev.descKey, ev.descParams) : ev.description}
                 </div>
+                {ev.imageUrl && (
+                  <button
+                    type="button"
+                    className={styles.tlThumb}
+                    onClick={() => setLightbox(ev.imageUrl!)}
+                    title={t('detection.passport.viewPhoto')}
+                  >
+                    <img src={ev.imageUrl} alt={ev.titleKey ? t(ev.titleKey) : ev.title} loading="lazy" />
+                  </button>
+                )}
                 <div className={styles.tlTime}>
                   {formatDistanceToNow(new Date(ev.timestamp), { addSuffix: true, locale: dateLocale })}
                 </div>
@@ -160,6 +174,12 @@ export function PassportTimeline({ passport }: { passport: PlantPassport }) {
           );
         })}
       </div>
+
+      {lightbox && (
+        <div className={styles.lightbox} onClick={() => setLightbox(null)} role="dialog" aria-modal="true">
+          <img src={lightbox} alt={t('detection.passport.viewPhoto')} onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
     </Card>
   );
 }
