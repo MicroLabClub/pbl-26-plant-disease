@@ -10,15 +10,19 @@
       },
       "items": {
         "dashboard": "Dashboard",
+        "home": "Home",
         "liveCamera": "Live camera",
         "fieldReport": "Field report",
         "detectionLog": "Detection log",
+        "plants": "Plants",
         "plantPassport": "Plant passport",
         "severityTrends": "Severity trends",
         "recommendations": "Recommendations",
         "treatmentHistory": "Treatment history",
         "standPosition": "Stand position",
-        "notifications": "Notifications"
+        "notifications": "Notifications",
+        "users": "Users",
+        "apiKeys": "API keys"
       }
     },
     "device": {
@@ -79,7 +83,70 @@
     "disease_one": "{{count}} disease detected",
     "disease_other": "{{count}} diseases detected",
     "stereo": "stereo",
-    "hudRow": "Row {{row}}"
+    "hudRow": "Row {{row}}",
+    "offline": "Camera offline",
+    "noModelOutput": "No detections yet."
+  },
+  "common": {
+    "loading": "Loading…",
+    "loadError": "Couldn't load data. Please try again."
+  },
+  "plants": {
+    "title": "Plants",
+    "subtitle": "All tracked plants and their latest status",
+    "empty": "No plants tracked yet. Plants appear here once detections arrive.",
+    "noScans": "No scans",
+    "rowShort": "Row {{row}}",
+    "detectionCount_one": "{{count}} detection",
+    "detectionCount_other": "{{count}} detections"
+  },
+  "disease": {
+    "late_blight": "Late blight",
+    "early_blight": "Early blight",
+    "fusarium_wilt": "Fusarium wilt",
+    "powdery_mildew": "Powdery mildew",
+    "bacterial_spot": "Bacterial spot",
+    "leaf_mold": "Leaf mold",
+    "septoria_leaf_spot": "Septoria leaf spot",
+    "spider_mites": "Spider mites",
+    "healthy": "Healthy"
+  },
+  "apiKeys": {
+    "title": "Ingestion API keys",
+    "subtitle": "Issue and revoke keys used by edge devices to push detections",
+    "createTitle": "Generate a new key",
+    "createHint": "Keys authenticate the sync server's detection ingest. The owner must be an existing agriculture user.",
+    "ownerLabel": "Owner (agriculture user)",
+    "nameLabel": "Key name",
+    "createBtn": "Generate key",
+    "createError": "Couldn't create the key. Check the owner and name.",
+    "noAgricultureUsers": "No agriculture users exist yet. Create one (register a user and assign the agriculture role) before issuing a key.",
+    "createdTitle": "Key created",
+    "createdHint": "Copy this key now — it is shown only once and cannot be retrieved later.",
+    "copy": "Copy key",
+    "listTitle": "Existing keys",
+    "empty": "No API keys yet.",
+    "active": "active",
+    "revoked": "revoked",
+    "revoke": "Revoke",
+    "lastUsed": "last used {{when}}",
+    "neverUsed": "never used"
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "Create and manage field (agriculture) users",
+    "createTitle": "Add an agriculture user",
+    "createHint": "Creates a login already assigned the agriculture role — ready to own plants and receive ingestion keys.",
+    "email": "Email",
+    "password": "Password",
+    "createBtn": "Create user",
+    "createError": "Couldn't create the user. The email may already exist or the password is too weak (8+ chars, upper, lower, digit).",
+    "created": "Created {{email}}.",
+    "listTitle": "All users",
+    "empty": "No users yet.",
+    "noRoles": "no roles",
+    "grantAgri": "Make agriculture",
+    "revokeAgri": "Remove agriculture"
   },
   "detection": {
     "loading": "Loading…",
@@ -105,6 +172,10 @@
     "actNow": "Act now",
     "bioFirst": "Bio-first",
     "chemical": "Chemical",
+    "apply": "Apply to plant",
+    "applying": "Applying…",
+    "applied": "Applied {{name}} to {{plant}}.",
+    "applyError": "Couldn't record the treatment. Pick a plant you own and try again.",
     "type": {
       "biological": "Bio-first",
       "chemical": "Chemical"
@@ -161,9 +232,14 @@
     "title": "Plant Passport",
     "subtitle": "Health timeline — Plant #023 · Row 7"
   },
+  "passportApply": {
+    "title": "Apply a treatment",
+    "hint": "Record a treatment applied to {{plant}}. It will appear on the timeline above and in Treatment history."
+  },
   "recommendations": {
     "title": "Recommendations",
-    "subtitle": "Bio-first treatment protocol — Late blight"
+    "subtitle": "Bio-first treatment protocol",
+    "empty": "No treatments listed for this disease yet."
   },
   "severityTrends": {
     "title": "Severity Trends",
@@ -176,7 +252,8 @@
     "criticalLabel": "Critical",
     "warningLabel": "Warning",
     "healthyLabel": "Healthy",
-    "detections": "detections"
+    "detections": "detections",
+    "empty": "No detections yet to chart."
   },
   "standPosition": {
     "title": "Stand Position",
@@ -187,15 +264,18 @@
     "rowUnit": "of total",
     "pos": "Position",
     "height": "Height",
-    "speed": "Speed"
+    "speed": "Speed",
+    "empty": "No position telemetry yet."
   },
   "alertsPage": {
     "title": "Notifications",
-    "subtitle": "2 unread alerts"
+    "subtitle": "Active disease alerts",
+    "empty": "No active alerts — all recent scans are healthy."
   },
   "treatmentHistory": {
     "title": "Treatment History",
-    "subtitle": "Greenhouse A — Applied treatments"
+    "subtitle": "Applied treatments",
+    "empty": "No treatments have been applied yet."
   },
   "detectionLog": {
     "title": "Detection Log",
@@ -219,6 +299,33 @@
       "inference": "Inference",
       "time": "Time"
     }
+  },
+  "landing": {
+    "eyebrow": "AI crop disease detection",
+    "title": "Catch plant disease <em>before</em> it spreads.",
+    "lede": "AgriCure watches your greenhouse in real time. Edge cameras and on-device AI spot disease on every plant, keep a full health history, and recommend the right treatment — so you act early, not after the damage is done.",
+    "signIn": "Sign in",
+    "cta": "Open the dashboard",
+    "ctaCamera": "Open live camera",
+    "ctaPlants": "View plants",
+    "howTitle": "How AgriCure works",
+    "s1": { "title": "Scan the rows", "desc": "ZED 2 stereo cameras on the moving stand stream every row of the greenhouse in real time." },
+    "s2": { "title": "Detect on-device", "desc": "A YOLOv8 model flags disease per plant with a confidence score, severity and the affected leaf area." },
+    "s3": { "title": "Act early", "desc": "Get a bio-first treatment recommendation, apply it, and track each plant's health on its passport." },
+    "diseases": "Detects 8 tomato diseases — late & early blight, fusarium wilt, powdery mildew, bacterial spot, leaf mold, septoria leaf spot and spider mites.",
+    "f1": {
+      "title": "Live detection",
+      "desc": "ZED 2 cameras stream the rows; YOLOv8 flags disease with confidence and location in real time."
+    },
+    "f2": {
+      "title": "Plant passports",
+      "desc": "Every plant gets a health timeline — scans, severity trends and the treatments applied to it."
+    },
+    "f3": {
+      "title": "Smart treatments",
+      "desc": "Bio-first recommendations per disease, plus a record of what was applied and when."
+    },
+    "footer": "AgriCure — intelligent crop disease detection"
   },
   "login": {
     "welcome": "Welcome back",
@@ -268,6 +375,7 @@
   "history": {
     "applied": "Applied to Row {{row}}, Plants #{{from}}–#{{to}} · {{type}}",
     "appliedFullRow": "Applied to Row {{row}}, full row · {{type}}",
+    "appliedPlant": "Applied to plant {{plant}} (Row {{row}}) · {{type}}",
     "phiDays": "PHI {{days}} days",
     "type": {
       "biological": "biological",
